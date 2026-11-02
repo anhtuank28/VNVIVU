@@ -1,0 +1,12 @@
+{
+  "editor.inlineSuggest.enabled": false,
+  "github.copilot.enable": {
+    "*": false
+  },
+  "github.copilot.inlineSuggest.enable": false,
+  "gemini.codeSuggestions.enabled": false,
+  "gemini.inlineSuggest.enabled": false,
+  "cody.autocomplete.enabled": false,
+  "continue.enableInlineCompletions": false,
+  "tabnine.experimentalAutoImports": false
+}

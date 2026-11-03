@@ -1,0 +1,101 @@
+extends ../layouts/default.pug
+
+block main
+  if (permissions.includes("dashboard-view"))
+    h1.box-title Tổng quan
+
+    //- Section 1
+    .section-1
+      .inner-item
+        .inner-icon
+          img(src="/admin/assets/images/section-1-icon-1.svg")
+        .inner-content
+          .inner-title Quản trị viên
+          .inner-number #{overview.totalAdmin.toLocaleString("vi-VN")}
+      .inner-item
+        .inner-icon
+          img(src="/admin/assets/images/section-1-icon-1.svg")
+        .inner-content
+          .inner-title Người dùng
+          .inner-number #{overview.totalUser.toLocaleString("vi-VN")}
+      .inner-item
+        .inner-icon
+          img(src="/admin/assets/images/section-1-icon-2.svg")
+        .inner-content
+          .inner-title Đơn hàng
+          .inner-number #{overview.totalOrder.toLocaleString("vi-VN")}
+      .inner-item
+        .inner-icon
+          img(src="/admin/assets/images/section-1-icon-3.svg")
+        .inner-content
+          .inner-title Doanh thu
+          .inner-number #{overview.totalPrice.toLocaleString("vi-VN")}đ
+    //- End Section 1
+
+    //- Section 2
+    .section-2
+      .inner-head
+        h2.inner-title Biểu đồ doanh thu
+        .inner-filter
+          input(
+            type="month"
+            name=""
+          )
+      .inner-chart
+        canvas(id="revenue-chart")
+    //- End Section 2
+
+    //- Section 3
+    .section-3
+      h2.inner-title Đơn hàng mới
+      .table-1
+        table
+          thead
+            tr
+              th Mã
+              th Thông tin khách
+              th Danh sách tour
+              th Thanh toán
+              th Trạng thái
+              th.inner-text-right Ngày đặt
+          tbody
+            if recentOrders && recentOrders.length > 0
+              each orderDetail in recentOrders
+                tr
+                  td
+                    .inner-code #{orderDetail.orderCode}
+                  td
+                    .inner-text Họ tên: #{orderDetail.fullName}
+                    .inner-text SĐT: #{orderDetail.phone}
+                    .inner-text Ghi chú: #{orderDetail.note}
+                  td
+                    each item in orderDetail.items
+                      .inner-item
+                        .inner-image
+                          img(src=item.avatar, alt=item.name)
+                        .inner-content
+                          .inner-name #{item.name}
+                          .inner-quantity Người lớn: #{item.quantityAdult} x #{(item.priceNewAdult || 0).toLocaleString("vi-VN")}đ
+                          .inner-quantity Trẻ em: #{item.quantityChildren} x #{(item.priceNewChildren || 0).toLocaleString("vi-VN")}đ
+                          .inner-quantity Em bé: #{item.quantityBaby} x #{(item.priceNewBaby || 0).toLocaleString("vi-VN")}đ
+                  td
+                    .inner-text Tổng tiền: <b style="color: red;">#{(orderDetail.total || 0).toLocaleString("vi-VN")}đ</b>
+                    .inner-text Thanh toán: <b>#{orderDetail.paymentMethodName}</b>
+                    if (orderDetail.paymentStatus == "paid")
+                      .inner-text TTTT: <b style="color: green;">#{orderDetail.paymentStatusName}</b>
+                    else
+                      .inner-text TTTT: <b style="color: orange;">#{orderDetail.paymentStatusName}</b>
+                  td
+                    if (orderDetail.status == "initial")
+                      .badge.badge-orange #{orderDetail.statusName}
+                    else if (orderDetail.status == "done")
+                      .badge.badge-green #{orderDetail.statusName}
+                    else if (orderDetail.status == "cancel")
+                      .badge.badge-red #{orderDetail.statusName}
+                  td.inner-text-right
+                    .inner-text #{orderDetail.createdAtTime}
+                    .inner-text #{orderDetail.createdAtDate}
+            else
+              tr
+                td(colspan="6" class="text-center") Chưa có đơn hàng nào
+    //- End Section 3

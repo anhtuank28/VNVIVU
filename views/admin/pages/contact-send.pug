@@ -1,0 +1,20 @@
+extends ../layouts/default.pug
+
+block main
+  h1.box-title Gửi thư nhận tin (Newsletter)
+
+  .section-8
+    form(
+      action=`/${pathAdmin}/contact/send`
+      method="POST"
+    )
+      .inner-group.inner-two-col
+        label(class="inner-label" for="subject") Tiêu đề Email
+        input(type="text" id="subject" name="subject" required)
+      .inner-group.inner-two-col
+        label(class="inner-label" for="content") Nội dung Email
+        textarea(id="content" name="content" textarea-mce)
+      .inner-button.inner-two-col
+        button(type="submit") Gửi Email
+    .inner-back
+      a(href=`/${pathAdmin}/contact/list`) Quay lại danh sách

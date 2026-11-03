@@ -1,0 +1,42 @@
+extends ../layouts/default.pug
+
+block main
+  h1.box-title Chỉnh sửa mã giảm giá
+
+  .section-8
+      form(
+        action=`/${pathAdmin}/coupon/edit/${coupon.id}?_method=PATCH`
+        method="POST"
+      )
+        .inner-group
+          label(class="inner-label" for="code") Mã giảm giá (Code)
+          input(type="text" id="code" name="code" value=coupon.code required)
+        
+        .inner-group
+          label(class="inner-label" for="type") Loại giảm giá
+          select(id="type" name="type")
+            option(value="percent" selected=(coupon.type == "percent")) Phần trăm (%)
+            option(value="amount" selected=(coupon.type == "amount")) Số tiền cố định (đ)
+            
+        .inner-group
+          label(class="inner-label" for="value") Mức giảm
+          input(type="number" id="value" name="value" value=coupon.value min="0" required)
+          
+        .inner-group
+          label(class="inner-label" for="minOrderValue") Đơn hàng tối thiểu (đ)
+          input(type="number" id="minOrderValue" name="minOrderValue" value=coupon.minOrderValue min="0")
+          
+        .inner-group
+          label(class="inner-label" for="quantity") Số lượng lượt dùng
+          input(type="number" id="quantity" name="quantity" value=coupon.quantity min="1")
+
+        .inner-group
+          label(class="inner-label" for="status") Trạng thái
+          select(id="status" name="status")
+            option(value="active" selected=(coupon.status == "active")) Hoạt động
+            option(value="inactive" selected=(coupon.status == "inactive")) Tạm dừng
+
+        .inner-button.inner-two-col
+          button(type="submit") Cập nhật
+      .inner-back
+        a(href=`/${pathAdmin}/coupon/list`) Quay lại danh sách

@@ -1,0 +1,46 @@
+extends ../layouts/default.pug
+
+block main
+  h1.box-title Thêm mã giảm giá
+
+  .section-8
+      form(
+        action=`/${pathAdmin}/coupon/create`
+        method="POST"
+      )
+        .inner-group
+          label(class="inner-label" for="code") Mã giảm giá (Code)
+          input(type="text" id="code" name="code" required)
+        
+        .inner-group
+          label(class="inner-label" for="type") Loại giảm giá
+          select(id="type" name="type")
+            option(value="percent") Phần trăm (%)
+            option(value="amount") Số tiền cố định (đ)
+            
+        .inner-group
+          label(class="inner-label" for="value") Mức giảm
+          input(type="number" id="value" name="value" min="0" required)
+          
+        .inner-group
+          label(class="inner-label" for="minOrderValue") Đơn hàng tối thiểu (đ)
+          input(type="number" id="minOrderValue" name="minOrderValue" value="0" min="0")
+          
+        .inner-group
+          label(class="inner-label" for="quantity") Số lượng lượt dùng
+          input(type="number" id="quantity" name="quantity" value="1" min="1")
+
+        .inner-group
+          label(class="inner-label" for="expireAt") Hạn sử dụng
+          input(type="date" id="expireAt" name="expireAt")
+
+        .inner-group
+          label(class="inner-label" for="status") Trạng thái
+          select(id="status" name="status")
+            option(value="active") Hoạt động
+            option(value="inactive") Tạm dừng
+
+        .inner-button.inner-two-col
+          button(type="submit") Tạo mới
+      .inner-back
+        a(href=`/${pathAdmin}/coupon/list`) Quay lại danh sách

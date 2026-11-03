@@ -1,0 +1,49 @@
+extends ../layouts/default.pug
+
+block main
+  h1.box-title Thông tin website
+
+  .section-8
+    form#setting-website-info-form
+      .inner-group
+        label(class="inner-label" for="websiteName") Tên website
+        input(type="text" id="websiteName" name="websiteName" value=settingWebsiteInfo.websiteName)
+      .inner-group
+        label(class="inner-label" for="phone") Số điện thoại
+        input(type="text" id="phone" name="phone" value=settingWebsiteInfo.phone)
+      .inner-group
+        label(class="inner-label" for="email") Email
+        input(type="text" id="email" name="email" value=settingWebsiteInfo.email)
+      .inner-group
+        label(class="inner-label" for="address") Địa chỉ
+        input(type="text" id="address" name="address" value=settingWebsiteInfo.address)
+      .inner-group
+        label(class="inner-label" for="footerDescription") Mô tả Footer
+        textarea(id="footerDescription" name="footerDescription" rows="4" style="width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 10px; font-family: inherit;") #{settingWebsiteInfo.footerDescription}
+      .inner-group
+        label(class="inner-label" for="facebook") Link Facebook
+        input(type="text" id="facebook" name="facebook" value=settingWebsiteInfo.facebook)
+      .inner-group
+        label(class="inner-label" for="instagram") Link Instagram
+        input(type="text" id="instagram" name="instagram" value=settingWebsiteInfo.instagram)
+      .inner-group
+        label(class="inner-label" for="twitter") Link Twitter
+        input(type="text" id="twitter" name="twitter" value=settingWebsiteInfo.twitter)
+      .inner-group
+        label(class="inner-label" for="youtube") Link Youtube
+        input(type="text" id="youtube" name="youtube" value=settingWebsiteInfo.youtube)
+      .inner-group
+        label(class="inner-label" for="copyright") Dòng Bản quyền (Copyright)
+        input(type="text" id="copyright" name="copyright" value=settingWebsiteInfo.copyright)
+      .inner-group
+        label(class="inner-label" for="logo") Logo
+        div(class="inner-upload-image" image-default=settingWebsiteInfo.logo)
+          input(type="file" id="logo" accept="image/*" filepond-image name="logo")
+      .inner-group
+        label(class="inner-label" for="favicon") Favicon
+        div(class="inner-upload-image" image-default=settingWebsiteInfo.favicon)
+          input(type="file" id="favicon" accept="image/*" filepond-image name="favicon")
+      .inner-button.inner-two-col
+        button Cập nhật
+    .inner-back
+      a(href=`/${pathAdmin}/setting/list`) Quay lại danh sách

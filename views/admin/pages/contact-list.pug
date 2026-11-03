@@ -1,0 +1,81 @@
+extends ../layouts/default.pug
+
+block main
+  h1.box-title Thông tin liên hệ
+
+  //- Section 4
+  .section-4
+    .inner-wrap
+      .inner-item.inner-label
+        <i class="fa-solid fa-filter"></i> Bộ lọc
+      .inner-item.inner-date
+        input(type="date")
+        span -
+        input(type="date")
+      .inner-item.inner-reset
+        <i class="fa-solid fa-rotate-left"></i> Xóa bộ lọc
+  //- End Section 4
+
+  //- Section 5
+  .section-5
+    .inner-wrap
+      if(permissions.includes('contact-delete'))
+        .inner-change-status
+          .inner-item
+            select
+              option(value="") -- Hành động --
+              option(value="") Xóa
+          .inner-item
+            button Áp dụng
+      .inner-search
+        <i class="fa-solid fa-magnifying-glass"></i>
+        input(type="text" placeholder="Tìm kiếm")
+      .inner-button-create
+        a(href=`/${pathAdmin}/contact/send`)
+          <i class="fa-regular fa-paper-plane"></i> Gửi Thư Hàng Loạt
+  //- End Section 5
+
+  //- Section 6
+  .section-6
+    .table-2
+      table
+        thead
+          tr
+            th(class="inner-center")
+              input(type="checkbox" class="inner-check")
+            th Họ và tên
+            th Email
+            th Điện thoại
+            th Nội dung
+            th Ngày tạo
+            if(permissions.includes('contact-delete'))
+              th(class="inner-center") Hành động
+        tbody
+          each item in contactList
+            tr
+              td(class="inner-center")
+                input(type="checkbox" class="inner-check")
+              td #{item.fullName || '-'}
+              td #{item.email}
+              td #{item.phone || '-'}
+              td(style="max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;") #{item.message || '-'}
+              td #{item.createdAtFormat}
+              if(permissions.includes('contact-delete'))
+                td(class="inner-center")
+                  .inner-buttons
+                    button(
+                      button-delete
+                      data-api=`/${pathAdmin}/contact/delete/${item.id}`
+                      class="inner-delete"
+                    ) 
+                      i.fa-regular.fa-trash-can
+  //- End Section 6
+
+  //- Section 7
+  if (pagination)
+    .section-7
+      span(class="inner-label") Hiển thị #{contactList.length>0 ? pagination.skip + 1 :0} - #{pagination.skip + contactList.length} của #{pagination.totalRecord}
+      select(class="inner-pagination" pagination)
+        - for (let i = 1; i <= pagination.totalPage; i++)
+          option(value=i selected=(i == pagination.currentPage ? true : false)) Trang #{i}
+  //- End Section 7

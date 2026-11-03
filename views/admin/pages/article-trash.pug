@@ -1,0 +1,68 @@
+extends ../layouts/default.pug
+
+block main
+    h1.box-title Thùng rác tin tức
+
+    //- Section 5
+    .section-5
+      .inner-wrap
+        .inner-change-status(
+          change-multi
+          data-api=`/${pathAdmin}/article/trash/change-multi`
+        )
+          .inner-item
+            select
+              option(value="") -- Hành động --
+              option(value="undo") Khôi phục
+              option(value="delete-destroy") Xóa vĩnh viễn
+          .inner-item
+            button Áp dụng
+        .inner-search
+          <i class="fa-solid fa-magnifying-glass"></i>
+          input(type="text" placeholder="Tìm kiếm" search)
+    //- End Section 5
+
+    //- Section 6
+    .section-6
+      .table-2
+        table
+          thead
+            tr
+              th(class="inner-center")
+                input(type="checkbox" class="inner-check" check-all)
+              th Tiêu đề
+              th Ảnh đại diện
+              th Người xóa
+              th Hành động
+          tbody
+            each item in articleList
+              tr
+                td(class="inner-center")
+                  input(type="checkbox" class="inner-check" check-item=item.id)
+                td #{item.title}
+                td
+                  img(src=item.avatar class="inner-avatar" style="width:80px;height:auto;border-radius:4px;")
+                td
+                  div #{item.deletedByFullName}
+                  div.inner-time #{item.deletedAtFormat}
+                td
+                  .inner-buttons
+                      button(
+                        class="inner-edit"
+                        button-undo
+                        data-api=`/${pathAdmin}/article/undo/${item.id}`
+                      ) <i class="fa-solid fa-rotate-left"></i>
+                      button(
+                        class="inner-delete"
+                        button-delete
+                        data-api=`/${pathAdmin}/article/delete-destroy/${item.id}`
+                      ) <i class="fa-regular fa-trash-can"></i>
+    //- End Section 6
+
+    //- Section 7`
+    .section-7
+      span(class="inner-label") Hiển thị #{articleList.length>0 ? pagination.skip + 1 :0} - #{pagination.skip + articleList.length} của #{pagination.totalRecord}
+      select(class="inner-pagination" pagination)
+        - for (let i = 1; i <= pagination.totalPage; i++)
+          option(value=i selected=(i == pagination.currentPage ? true : false)) Trang #{i}
+    //- End Section 7

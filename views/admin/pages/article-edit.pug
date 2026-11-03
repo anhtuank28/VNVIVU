@@ -1,0 +1,91 @@
+extends ../layouts/default.pug
+include ../mixins/options.pug
+
+block main
+    h1.box-title Chỉnh sửa tin tức
+
+    .section-8
+      form#article-edit-form
+        input(type="hidden" name="id" id="id" value=articleDetail.id)
+        .inner-group
+          label(class="inner-label" for="title") Tiêu đề bài viết
+          input(type="text" id="title" name="title" value=articleDetail.title)
+        .inner-group
+          label(class="inner-label" for="position") Vị trí
+          input(type="number" id="position" name="position" value=articleDetail.position)
+        .inner-group
+          label(class="inner-label" for="status") Trạng thái
+          select(id="status" name="status")
+            option(value="active" selected=(articleDetail.status == "active" ? true : false)) Hoạt động
+            option(value="inactive" selected=(articleDetail.status == "inactive" ? true : false)) Tạm dừng
+        .inner-group.inner-two-col
+          label(class="inner-label" for="avatar") Ảnh đại diện
+          div(class="inner-upload-image" image-default=articleDetail.avatar)
+            input(type="file" id="avatar" accept="image/*" filepond-image name="avatar")
+        .inner-group.inner-two-col
+          label(class="inner-label" for="content") Nội dung
+          textarea(id="content" textarea-mce name="content") !{articleDetail.content}
+        .inner-button.inner-two-col
+          button Cập nhật
+      .inner-back
+        a(href=`/${pathAdmin}/article/list`) Quay lại danh sách
+
+    script.
+      document.addEventListener("DOMContentLoaded", function() {
+        const articleEditForm = document.querySelector("#article-edit-form");
+        if (articleEditForm) {
+          const validation = new JustValidate('#article-edit-form');
+
+          validation
+            .addField('#title', [
+              {
+                rule: 'required',
+                errorMessage: 'Vui lòng nhập tiêu đề bài viết!'
+              }
+            ])
+            .onSuccess((event) => {
+              const id = event.target.id.value;
+              const title = event.target.title.value;
+              const position = event.target.position.value;
+              const status = event.target.status.value;
+              
+              let avatar = "";
+              if (typeof filePond !== "undefined" && filePond.avatar) {
+                const avatars = filePond.avatar.getFiles();
+                if (avatars.length > 0) {
+                  avatar = avatars[0].serverId || avatars[0].source;
+                  
+                  const elementImageDefault = event.target.avatar.closest("[image-default]");
+                  if(elementImageDefault){
+                    const imageDefault = elementImageDefault.getAttribute("image-default");
+                    if (imageDefault && imageDefault.includes(avatars[0].file.name)) {
+                      avatar = null;
+                    }
+                  }
+                }
+              }
+
+              const content = tinymce.get("content").getContent();
+
+              const formData = new FormData();
+              formData.append("title", title);
+              formData.append("position", position);
+              formData.append("status", status);
+              if(avatar !== null) formData.append("avatar", avatar);
+              formData.append("content", content);
+
+              fetch(`/${pathAdmin}/article/edit/${id}`, {
+                method: "PATCH",
+                body: formData
+              })
+              .then(res => res.json())
+              .then(data => {
+                if (data.code == "error") {
+                  alert(data.message);
+                } else if (data.code == "success") {
+                  window.location.reload();
+                }
+              });
+            });
+        }
+      });

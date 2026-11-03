@@ -1,0 +1,81 @@
+extends ../layouts/default.pug
+include ../mixins/options.pug
+
+block main
+    h1.box-title Tạo tin tức
+
+    .section-8
+      form#article-create-form
+        .inner-group
+          label(class="inner-label" for="title") Tiêu đề bài viết
+          input(type="text" id="title" name="title")
+        .inner-group
+          label(class="inner-label" for="position") Vị trí
+          input(type="number" id="position" name="position")
+        .inner-group
+          label(class="inner-label" for="status") Trạng thái
+          select(id="status" name="status")
+            option(value="active") Hoạt động
+            option(value="inactive") Tạm dừng
+        .inner-group.inner-two-col
+          label(class="inner-label" for="avatar") Ảnh đại diện
+          div(class="inner-upload-image")
+            input(type="file" id="avatar" accept="image/*" filepond-image name="avatar")
+        .inner-group.inner-two-col
+          label(class="inner-label" for="content") Nội dung
+          textarea(id="content" textarea-mce name="content")
+        .inner-button.inner-two-col
+          button Tạo bài viết
+      .inner-back
+        a(href=`/${pathAdmin}/article/list`) Quay lại danh sách
+
+    script.
+      document.addEventListener("DOMContentLoaded", function() {
+        const articleCreateForm = document.querySelector("#article-create-form");
+        if (articleCreateForm) {
+          const validation = new JustValidate('#article-create-form');
+
+          validation
+            .addField('#title', [
+              {
+                rule: 'required',
+                errorMessage: 'Vui lòng nhập tiêu đề bài viết!'
+              }
+            ])
+            .onSuccess((event) => {
+              const title = event.target.title.value;
+              const position = event.target.position.value;
+              const status = event.target.status.value;
+              
+              let avatar = "";
+              if (typeof filePond !== "undefined" && filePond.avatar) {
+                const avatars = filePond.avatar.getFiles();
+                if (avatars.length > 0) {
+                  avatar = avatars[0].serverId || avatars[0].source;
+                }
+              }
+
+              const content = tinymce.get("content").getContent();
+
+              const formData = new FormData();
+              formData.append("title", title);
+              formData.append("position", position);
+              formData.append("status", status);
+              formData.append("avatar", avatar);
+              formData.append("content", content);
+
+              fetch(`/${pathAdmin}/article/create`, {
+                method: "POST",
+                body: formData
+              })
+              .then(res => res.json())
+              .then(data => {
+                if (data.code == "error") {
+                  alert(data.message);
+                } else if (data.code == "success") {
+                  window.location.href = `/${pathAdmin}/article/list`;
+                }
+              });
+            });
+        }
+      });

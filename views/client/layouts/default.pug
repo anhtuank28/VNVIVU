@@ -1,0 +1,80 @@
+doctype html 
+html(lang="vi")
+  head
+    meta(charset="UTF-8")
+    meta(
+      content="width=device-width, initial-scale=1.0" 
+      name="viewport"
+      )
+    title #{pageTitle}
+    if settingWebsiteInfo && settingWebsiteInfo.favicon
+      link(rel="icon" href=settingWebsiteInfo.favicon type="image/x-icon")
+    meta(name="description" content="VnVivu - Khám phá thế giới qua những chuyến đi")
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet")
+    link(
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 
+      rel="stylesheet"
+      )
+    link(
+      rel="stylesheet" 
+      href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+      )
+    link(
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" 
+      rel="stylesheet"
+      )
+    link(
+      href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.min.css" 
+      rel="stylesheet"
+      )
+    link(
+      href="/assets/css/style.css" 
+      rel="stylesheet"
+      )
+    link(
+      href="/assets/css/terms-privacy-policy.css"
+      rel="stylesheet"
+      )
+    //- link(
+    //-   href="/assets/css/chatbot.css"
+    //-   rel="stylesheet"
+    //-   )
+    link(
+      href="/assets/css/review.css"
+      rel="stylesheet"
+      )
+    block head
+  body
+    - if (messages.success)
+      div(class="alert alert-success" alert-time="5000")
+        div(class="alert-icon")
+          i.fa-solid.fa-check
+        div(class="alert-content")
+          span #{messages.success}
+        div(class="alert-close")
+          i.fa-solid.fa-xmark
+    - if (messages.error)
+      div(class="alert alert-error" alert-time="5000")
+        div(class="alert-icon")
+          i.fa-solid.fa-exclamation
+        div(class="alert-content")
+          span #{messages.error}
+        div(class="alert-close")
+          i.fa-solid.fa-xmark
+    include ../partials/header.pug
+    block main
+    include ../partials/footer.pug
+    include ../partials/box-contact.pug
+    //- include ../partials/chatbot.pug
+
+
+    script(src="https://unpkg.com/aos@2.3.1/dist/aos.js")
+    script(src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/just-validate@4.3.0/dist/just-validate.production.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11")
+    script(src="/assets/js/script.js")
+    script(src="/assets/js/review.js")
+    //- script(src="/assets/js/chatbot.js")

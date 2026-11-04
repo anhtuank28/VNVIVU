@@ -1,0 +1,44 @@
+mixin product-item(item)
+  - const priceAdult = item.priceAdult || 0;
+  - const priceNewAdult = item.priceNewAdult || 0;
+  - const discount = priceAdult > 0 ? parseInt(((priceAdult - priceNewAdult) / priceAdult) * 100) : 0;
+
+  .product-item
+    .inner-image
+      a(href=`/tour/detail/${item.slug}`)
+        img(
+          alt=item.name
+          src=item.avatar
+          )
+      if(discount > 0)
+        .inner-discount
+          i.fa-solid.fa-bolt
+          | -#{discount}%
+    .inner-content
+      h3.inner-title
+        a(href=`/tour/detail/${item.slug}`) #{item.name}
+      .inner-rating(style="display: flex; align-items: center; gap: 6px; margin-bottom: 10px; font-size: 13px;")
+        span(style="color: #F59E0B; font-weight: 700; display: inline-flex; align-items: center; gap: 3px;")
+          i.fa-solid.fa-star(style="font-size: 12px;")
+          | #{item.ratingAverage ? item.ratingAverage.toFixed(1) : "5.0"}
+        span(style="color: #94A3B8; font-size: 12px;") (#{item.ratingQuantity || 0} đánh giá)
+      .inner-prices
+        if(discount > 0)
+          .inner-price-old
+            | #{priceAdult.toLocaleString("vi-VN")}
+            span.inner-unit đ
+        .inner-price-new
+          | #{priceNewAdult.toLocaleString("vi-VN")}
+          span.inner-unit đ
+      .inner-desc
+        .inner-desc-item
+          i.fa-regular.fa-calendar-days
+          b #{item.departureDateFormat}
+        if(item.time)
+          .inner-desc-item
+            i.fa-regular.fa-clock
+            b #{item.time}
+      .inner-meta
+        .inner-stock
+          .inner-label Số chỗ còn
+          .inner-number #{item.stockAdult}

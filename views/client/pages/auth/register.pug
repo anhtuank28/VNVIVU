@@ -1,0 +1,147 @@
+extends ../../layouts/default.pug
+
+block head
+  style.
+    .form-account-wrapper {
+      padding: 60px 0;
+      background-color: #F8FAFC;
+    }
+    .form-account {
+      background-color: #fff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 50px 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    .form-account .inner-title {
+      margin-top: 0;
+      margin-bottom: 10px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 28px;
+      color: #0F172A;
+    }
+    .form-account .inner-desc {
+      margin-top: 0;
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 16px;
+      color: #64748B;
+    }
+    .form-account .inner-group {
+      margin-bottom: 20px;
+    }
+    .form-account .inner-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      color: #334155;
+    }
+    .form-account .inner-control {
+      width: 100%;
+      height: 48px;
+      background-color: #F1F5F9;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 0 16px;
+      font-size: 15px;
+      color: #0F172A;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    .form-account .inner-control:focus {
+      border-color: #0EA5E9;
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+    }
+    .form-account .inner-button {
+      width: 100%;
+      height: 48px;
+      border: 0;
+      background-color: #0369A1;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+    .form-account .inner-button:hover {
+      background-color: #02507e;
+    }
+    .form-account .inner-more {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 15px;
+      color: #64748B;
+    }
+    .form-account .inner-more a {
+      font-weight: 600;
+      color: #0369A1;
+      margin-left: 5px;
+      text-decoration: none;
+    }
+    .form-account .inner-more a:hover {
+      text-decoration: underline;
+    }
+
+block main
+  .form-account-wrapper
+    .container
+      .form-account
+        h2.inner-title Đăng ký
+        p.inner-desc Tạo một tài khoản để tiếp tục
+        
+        form(id="register-form" action="/auth/register" method="POST")
+          .inner-group
+            label(class="inner-label" for="fullName") Họ tên
+            input(
+              type="text"
+              name="fullName"
+              id="fullName"
+              placeholder="Ví dụ: Lê Văn A"
+              class="inner-control"
+              required
+            )
+          .inner-group
+            label(class="inner-label" for="email") Email
+            input(
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Ví dụ: levana@gmail.com"
+              class="inner-control"
+              required
+            )
+          .inner-group
+            label(class="inner-label" for="password") Mật khẩu
+            input(
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Nhập mật khẩu"
+              class="inner-control"
+              required
+            )
+          .inner-group
+            label(class="inner-label" for="phone") Số điện thoại
+            input(
+              type="text"
+              name="phone"
+              id="phone"
+              placeholder="Ví dụ: 0987654321"
+              class="inner-control"
+            )
+          .inner-group(style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;")
+            input(type="checkbox" id="agree" name="agree")
+            label(for="agree" style="font-size: 14px; color: #334155; margin: 0; cursor: pointer;") Tôi đồng ý với các điều khoản và điều kiện
+          button(class="inner-button" type="submit") Đăng Ký
+        
+        .inner-more
+          span Bạn đã có tài khoản?
+          a(href="/auth/login") Đăng nhập

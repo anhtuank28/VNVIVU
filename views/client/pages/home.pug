@@ -1,0 +1,241 @@
+extends ../layouts/default.pug
+include ../mixins/product-item.pug
+
+block main
+  // Section 1
+  .section-1
+    video.section-1__video-bg(autoplay loop muted playsinline poster="/assets/images/background-1.jpg")
+      source(src="https://minio.fares.vn/mixivivu-dev/video/Mixivivuduthuyen.mp4" type="video/mp4")
+    .section-1__overlay
+    .container
+      .inner-wrap
+        h1.inner-title(
+          data-aos-duration="800" 
+          data-aos="fade-up"
+          )
+          | KHÁM PHÁ THẾ GIỚI CÙNG VNVIVU
+        p.inner-desc(
+          data-aos-delay="150" 
+          data-aos-duration="800" 
+          data-aos="fade-up"
+          )
+          | Hơn cả một chuyến đi, đó là những trải nghiệm khó quên trên mọi nẻo đường Châu Á, Mỹ, Úc và Âu.
+        form.inner-form(
+          data-aos-delay="300" 
+          data-aos-duration="800" 
+          data-aos="fade-up" 
+          action="#"
+          form-search
+          )
+          .inner-box.inner-address
+            .inner-input-group
+              img.inner-icon(src="/assets/images/icon-address.svg")
+              input.inner-input(
+                placeholder="Bạn muốn đi đâu?" 
+                type="text"
+                name="locationTo"
+                )
+              i.fa-solid.fa-angle-down.inner-down
+            .inner-suggest
+              .inner-suggest-title
+                i.fa-solid.fa-location-dot
+                | Địa Điểm Hot
+              .inner-suggest-list
+                .inner-item
+                  .inner-item-image
+                    img(
+                      alt="" 
+                      src="/assets/images/product-1.jpg"
+                      )
+                  .inner-item-content
+                    .inner-item-title Nhật Bản
+                    .inner-item-desc 50 tours
+                .inner-item
+                  .inner-item-image
+                    img(
+                      alt="" 
+                      src="/assets/images/product-2.jpg"
+                      )
+                  .inner-item-content
+                    .inner-item-title Phú Quốc
+                    .inner-item-desc 50 tours
+                .inner-item
+                  .inner-item-image
+                    img(
+                      alt="" 
+                      src="/assets/images/product-3.jpg"
+                      )
+                  .inner-item-content
+                    .inner-item-title Singapore
+                    .inner-item-desc 50 tours
+          .inner-box.inner-price
+            .inner-input-group
+              i.fa-solid.fa-coins(style="font-size: 20px; color: #6b7280; margin-right: 12px;")
+              select.inner-input(name="price" style="border: none; outline: none; background: transparent; width: 100%; -webkit-appearance: none; appearance: none; cursor: pointer; color: #333;")
+                option(value="" disabled selected hidden) Mức giá
+                option(value="0-5000000") Dưới 5 Triệu
+                option(value="5000000-10000000") 5 - 10 Triệu
+                option(value="10000000-20000000") 10 - 20 Triệu
+                option(value="20000000-1000000000") Trên 20 Triệu
+              i.fa-solid.fa-angle-down.inner-down
+          .inner-box.inner-calendar
+            .inner-input-group
+              img.inner-icon(src="/assets/images/icon-calendar.svg")
+              input.inner-input(type="date" name="departureDate")
+          button.inner-button(type="submit")
+            i.fa-solid.fa-magnifying-glass
+            | Tìm Kiếm
+  // End Section 1
+
+  // Section 2
+  .section-2(
+    data-aos-delay="450" 
+    data-aos-duration="800" 
+    data-aos="fade-up"
+    )
+    .container
+      .inner-wrap
+        .inner-info
+          h2.inner-title
+            | ƯU ĐÃI 2026
+            br
+            | TOUR GIỜ CHÓT
+          .inner-desc Nhanh tay đặt ngay các tour du lịch với giá cực sốc. Cơ hội có 1-0-2 trong năm, số lượng có hạn! Đừng bỏ lỡ!
+          .inner-clock-title Kết thúc sau
+          .inner-clock-number(clock-expire="2027-12-31T23:59:59")
+            span.inner-item
+              .inner-number 00
+              .inner-label Ngày
+            span.inner-item
+              .inner-number 00
+              .inner-label Giờ
+            span.inner-item
+              .inner-number 00
+              .inner-label Phút
+            span.inner-item
+              .inner-number 00
+              .inner-label Giây
+          .inner-discount-title GIẢM ĐẾN
+          .inner-discount-price
+            | 990.000
+            span.inner-unit đ
+        .inner-list
+          .swiper.swiper-section-2
+            .swiper-wrapper
+              each item in tourListSection2
+                .swiper-slide
+                  // Product Item
+                  +product-item(item)
+                  // End Product Item
+  // End Section 2
+
+  //- // Section 3
+  //- .section-3
+  //-   .container
+  //-     h2.box-title(
+  //-       data-aos-duration="800" 
+  //-       data-aos="fade-up"
+  //-       ) Khuyến Mại Bùng Nổ - Đánh Tan Nóng Bức
+  //-     .swiper.swiper-section-3(
+  //-       data-aos-delay="150" 
+  //-       data-aos-duration="800" 
+  //-       data-aos="fade-up"
+  //-       )
+  //-       .swiper-wrapper
+  //-         .swiper-slide
+  //-           .inner-item
+  //-             a(href="#")
+  //-               img(
+  //-                 alt="" 
+  //-                 src="/assets/images/banner-1.png"
+  //-                 )
+  //-         .swiper-slide
+  //-           .inner-item
+  //-             a(href="#")
+  //-               img(
+  //-                 alt="" 
+  //-                 src="/assets/images/banner-2.png"
+  //-                 )
+  //-         .swiper-slide
+  //-           .inner-item
+  //-             a(href="#")
+  //-               img(
+  //-                 alt="" 
+  //-                 src="/assets/images/banner-3.png"
+  //-                 )
+  //-         .swiper-slide
+  //-           .inner-item
+  //-             a(href="#")
+  //-               img(
+  //-                 alt="" 
+  //-                 src="/assets/images/banner-3.png"
+  //-                 )
+  //-       .swiper-pagination
+  //- // End Section 3
+
+  // Section 4
+  .section-4
+    .container
+      h2.box-title(
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        ) Tour Trong Nước
+      .inner-wrap(
+        data-aos-delay="150" 
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        )
+        each item in tourListSection4
+          // Product Item
+          +product-item(item)
+          // End Product Item
+      .inner-button
+        a.button-outline(href="/category/all") Xem tất cả
+  // End Section 4
+
+
+  // Section 6
+  .section-6
+    .container
+      h2.box-title(
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        ) Tour Nước Ngoài
+      .inner-wrap(
+        data-aos-delay="150" 
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        )
+        each item in tourListSection5
+          // Product Item
+          +product-item(item)
+          // End Product Item
+      .inner-button
+        a.button-outline(href="/category/all") Xem tất cả
+  // End Section 6
+
+
+  // Section 8
+  .section-8
+    .container
+      h2.box-title(
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        ) Tin Tức Mới
+      .inner-wrap(
+        data-aos-delay="150" 
+        data-aos-duration="800" 
+        data-aos="fade-up"
+        )
+        if (recentArticles && recentArticles.length > 0)
+          each item, index in recentArticles
+            div(class=(index === 1 ? 'blog-item-2' : 'blog-item'))
+              a(href=`/article/${item.slug}`)
+                .inner-image
+                  img(src=item.avatar, alt=item.title, style="width: 100%; height: 100%; object-fit: cover; image-rendering: high-quality;")
+                .inner-content
+                  .inner-date #{new Date(item.createdAt).toLocaleDateString('vi-VN')}
+                  h3.inner-title #{item.title}
+        else
+          p Hiện chưa có bài viết nào.
+  // End Section 8

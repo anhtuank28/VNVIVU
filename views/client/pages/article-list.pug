@@ -1,0 +1,39 @@
+extends ../layouts/default.pug
+include ../mixins/box-breadcrumb.pug
+
+block head
+  link(rel="stylesheet" href="/assets/css/article.css")
+
+block main
+  - 
+    const breadcrumb = {
+      image: "https://res.cloudinary.com/dk4hfh4un/image/upload/v1780907687/tours/cnbsrsdla64i6lqni2vx.jpg",
+      title: "Tin Tức & Cẩm Nang",
+      list: [
+        { title: "Trang chủ", link: "/" },
+        { title: "Tin tức" }
+      ]
+    }
+  +box-breadcrumb(breadcrumb)
+
+  .section-9
+    .container
+      .inner-wrap
+        .inner-right(style="width: 100%")
+          .inner-info
+            h2.inner-title Tin Tức & Cẩm Nang Du Lịch
+            .inner-desc Khám phá những câu chuyện thú vị, kinh nghiệm quý báu và thông tin mới nhất trên mọi hành trình.
+          .article-grid
+            if (articles && articles.length > 0)
+              each item in articles
+                .article-card
+                  if (item.avatar)
+                    a(href=`/article/${item.slug}`)
+                      img.article-image(src=item.avatar, alt=item.title)
+                  .article-content
+                    a.article-title(href=`/article/${item.slug}`) #{item.title}
+                    p.article-desc #{item.shortDesc}
+                    a.article-readmore(href=`/article/${item.slug}`) Đọc tiếp 
+                      i.fa-solid.fa-arrow-right
+            else 
+              p Hiện chưa có bài viết nào.

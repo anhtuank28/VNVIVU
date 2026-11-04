@@ -1,0 +1,141 @@
+extends ../layouts/default.pug
+include ../mixins/box-breadcrumb.pug
+
+block head
+  link(rel="stylesheet" href="/assets/css/contact.css")
+
+block main
+  - 
+    const breadcrumb = {
+      list: [
+        { title: "Trang chủ", link: "/" },
+        { title: "Liên hệ" }
+      ]
+    }
+  +box-breadcrumb(breadcrumb)
+
+  .contact-page
+    .container
+      .contact-wrapper
+
+        // Info block
+        .contact-info
+          h2.contact-info__title Chúng tôi luôn lắng nghe bạn
+          p.contact-info__desc Hãy gửi thông tin và chúng tôi sẽ liên hệ lại trong thời gian sớm nhất. Hoặc bạn có thể liên hệ trực tiếp qua các kênh bên dưới.
+
+          .contact-info__items
+            .contact-info__item
+              .contact-info__icon
+                i.fa-solid.fa-location-dot
+              .contact-info__text
+                strong Địa chỉ
+                span Thượng Cát, Thành Phố Hà Nội
+            .contact-info__item
+              .contact-info__icon
+                i.fa-solid.fa-phone
+              .contact-info__text
+                strong Điện thoại
+                span 0345673128
+            .contact-info__item
+              .contact-info__icon
+                i.fa-regular.fa-envelope
+              .contact-info__text
+                strong Email
+                span nguyenanhtuank18@gmail.com
+            .contact-info__item
+              .contact-info__icon
+                i.fa-regular.fa-clock
+              .contact-info__text
+                strong Giờ làm việc
+                span Thứ 2 - Thứ 7: 8:00 - 18:00
+
+          .contact-info__socials
+            a(href="#" target="_blank")
+              i.fa-brands.fa-facebook-f
+            a(href="#" target="_blank")
+              i.fa-brands.fa-instagram
+            a(href="#" target="_blank")
+              i.fa-brands.fa-youtube
+
+        // Form block
+        .contact-form
+          h3.contact-form__title Gửi tin nhắn cho chúng tôi
+          form#contact-form(novalidate)
+            .contact-form__row
+              .contact-form__group
+                label(for="contact-fullname") Họ và tên
+                input#contact-fullname(
+                  type="text"
+                  name="fullName"
+                  placeholder="Nguyễn Văn A"
+                )
+              .contact-form__group
+                label(for="contact-phone") Số điện thoại
+                input#contact-phone(
+                  type="tel"
+                  name="phone"
+                  placeholder="0901 234 567"
+                )
+            .contact-form__group
+              label(for="contact-email") Email
+              input#contact-email(
+                type="email"
+                name="email"
+                placeholder="example@email.com"
+              )
+            .contact-form__group
+              label(for="contact-message") Nội dung
+              textarea#contact-message(
+                name="message"
+                rows="5"
+                placeholder="Bạn cần hỗ trợ gì? Hãy chia sẻ với chúng tôi..."
+              )
+            button.contact-form__btn(type="submit" id="contact-submit-btn")
+              i.fa-regular.fa-paper-plane
+              | Gửi tin nhắn
+            p.contact-form__notice(id="contact-notice" style="display:none")
+
+  script.
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.querySelector("#contact-form");
+      const notice = document.querySelector("#contact-notice");
+
+      if (form) {
+        form.addEventListener("submit", async function(e) {
+          e.preventDefault();
+          const btn = document.querySelector("#contact-submit-btn");
+          btn.disabled = true;
+          btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
+
+          const formData = new FormData(form);
+          const data = {};
+          formData.forEach((v, k) => data[k] = v);
+
+          try {
+            const res = await fetch("/contact/create", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data)
+            });
+            const json = await res.json();
+
+            notice.style.display = "block";
+            if (json.code === "success") {
+              notice.className = "contact-form__notice contact-form__notice--success";
+              notice.textContent = "✓ Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm nhất.";
+              form.reset();
+            } else {
+              notice.className = "contact-form__notice contact-form__notice--error";
+              notice.textContent = "✗ " + json.message;
+            }
+          } catch(err) {
+            notice.style.display = "block";
+            notice.className = "contact-form__notice contact-form__notice--error";
+            notice.textContent = "Có lỗi xảy ra, vui lòng thử lại.";
+          }
+
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Gửi tin nhắn';
+        });
+      }
+    });

@@ -1,0 +1,33 @@
+extends ../layouts/default.pug
+include ../mixins/box-breadcrumb.pug
+
+block head
+  link(rel="stylesheet" href="/assets/css/article.css")
+
+block main
+  - 
+    const breadcrumb = {
+      image: "https://res.cloudinary.com/dk4hfh4un/image/upload/v1780907687/tours/cnbsrsdla64i6lqni2vx.jpg",
+      title: "Chi Tiết Bài Viết",
+      list: [
+        { title: "Trang chủ", link: "/" },
+        { title: "Tin tức", link: "/article" },
+        { title: article.title }
+      ]
+    }
+  +box-breadcrumb(breadcrumb)
+
+  .section-10
+    .container
+      .article-detail-wrap
+        .article-header
+          h1.article-title #{article.title}
+          .article-meta
+            span
+              i.fa-regular.fa-clock
+              | Đăng ngày: #{new Date(article.createdAt).toLocaleDateString('vi-VN')}
+            span
+              i.fa-regular.fa-user
+        if (article.avatar)
+          img.article-cover(src=article.avatar, alt=article.title)
+        .article-content !{article.content}

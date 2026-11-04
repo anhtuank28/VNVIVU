@@ -1,0 +1,269 @@
+extends ../layouts/default.pug
+include ../mixins/box-breadcrumb.pug
+
+block main
+  // Breadcrumb
+  +box-breadcrumb(breadcrumb)
+  // End Breadcrumb
+
+  // Section 10
+  .section-10
+    .container
+      .inner-wrap
+        .inner-left
+          .box-images
+            .inner-images-main
+              .swiper.swiper-box-images-main
+                .swiper-wrapper
+                  each image in tourDetail.images
+                    .swiper-slide
+                      .inner-image
+                        img(
+                          alt="" 
+                          src=image
+                          )
+            .inner-images-thumb
+              .swiper.swiper-box-images-thumb
+                .swiper-wrapper
+                  each image in tourDetail.images
+                    .swiper-slide
+                      .inner-image
+                        img(
+                          alt="" 
+                          src=image
+                          )
+          .box-tour-info
+            .inner-title Thông Tin Tour
+            .inner-content !{tourDetail.information}
+            .inner-read-more
+              button.button-outline Xem tất cả
+          .box-tour-schedule
+            .inner-title-main Lịch Trình Tour
+            .inner-list
+              if tourDetail.schedules && tourDetail.schedules.length > 0
+                each item in tourDetail.schedules
+                  .inner-item
+                    .inner-title #{item.title}
+                    .inner-content !{item.description}
+              else
+                p Lịch trình đang được cập nhật...
+
+          //- Khối Đánh giá & Nhận xét Tour
+          .box-tour-reviews
+            .reviews-main-title
+              h3
+                i.fa-solid.fa-star
+                span Đánh Giá &amp; Nhận Xét Tour
+              span.reviews-badge-count #{totalReviews || 0} đánh giá
+
+            //- 1. Tổng quan Rating
+            .reviews-overview
+              .overview-score
+                .score-big
+                  | #{tourDetail.ratingAverage ? tourDetail.ratingAverage.toFixed(1) : "5.0"}
+                  span /5
+                .score-stars
+                  - const avgStars = Math.round(tourDetail.ratingAverage || 5);
+                  - for (let i = 1; i <= 5; i++)
+                    if i <= avgStars
+                      i.fa-solid.fa-star
+                    else
+                      i.fa-solid.fa-star.empty
+                .score-sub #{totalReviews || 0} lượt đánh giá thực tế
+              
+              .overview-bars
+                - for (let s = 5; s >= 1; s--)
+                  .bar-row
+                    .bar-label
+                      span #{s}
+                      i.fa-solid.fa-star
+                    .bar-track
+                      .bar-fill(style=`width: ${ratingPercentages && ratingPercentages[s] ? ratingPercentages[s] : 0}%`)
+                    .bar-percent #{ratingPercentages && ratingPercentages[s] ? ratingPercentages[s] : 0}%
+                    .bar-count (#{ratingCounts && ratingCounts[s] ? ratingCounts[s] : 0})
+
+            //- 2. Form gửi đánh giá
+            if user
+              .review-form-container
+                .form-header
+                  h4 #{userReview ? "Cập nhật đánh giá của bạn" : "Chia sẻ cảm nhận về chuyến đi"}
+                  p Nhận xét của bạn sẽ giúp những du khách khác có thêm góc nhìn khách quan!
+                form#formReviewTour(data-tour-id=tourDetail.id)
+                  .star-rating-select
+                    label.form-label Chọn số sao:
+                    .stars-wrap#reviewStarsSelect
+                      - const currentRating = userReview ? userReview.rating : 5;
+                      - for (let star = 1; star <= 5; star++)
+                        i.fa-solid.fa-star.star-item(
+                          class=star <= currentRating ? "selected" : ""
+                          data-value=star
+                          title=`${star} sao`
+                        )
+                    input#reviewRatingInput(type="hidden" name="rating" value=currentRating)
+                    span.rating-hint#reviewRatingHint 5 sao - Tuyệt vời!
+
+                  .review-form-group
+                    label(for="reviewComment") Nội dung nhận xét:
+                    textarea.review-textarea#reviewComment(
+                      name="comment" 
+                      placeholder="Hãy chia sẻ những trải nghiệm đáng nhớ của bạn về hướng dẫn viên, phương tiện, khách sạn hoặc lịch trình..." 
+                      rows="4" 
+                      required
+                    ) #{userReview ? userReview.comment : ""}
+
+                  .review-upload-wrap
+                    label.upload-trigger-btn(for="reviewImagesInput")
+                      i.fa-solid.fa-camera
+                      span Thêm ảnh thực tế (tối đa 5 ảnh)
+                    input#reviewImagesInput(type="file" name="images" multiple accept="image/*" style="display: none;")
+                    .review-image-previews#reviewImagePreviews
+
+                  button.btn-submit-review#btnSubmitReview(type="submit")
+                    i.fa-solid.fa-paper-plane
+                    span #{userReview ? "Cập nhật đánh giá" : "Gửi đánh giá ngay"}
+            else
+              .review-notice-box
+                .notice-content
+                  .notice-icon
+                    i.fa-solid.fa-user-lock
+                  .notice-text
+                    h5 Đăng nhập để gửi đánh giá
+                    p Hãy đăng nhập để cùng chia sẻ nhận xét và trải nghiệm của bạn về chuyến đi này!
+                .notice-action
+                  a(href="/auth/login") Đăng nhập ngay
+
+            //- 3. Danh sách đánh giá
+            if reviews && reviews.length > 0
+              .reviews-list
+                each review in reviews
+                  .review-card
+                    .review-card-header
+                      .review-user-info
+                        .review-user-avatar
+                          if review.userId && review.userId.avatar
+                            img(src=review.userId.avatar alt=review.userId.fullName)
+                          else
+                            span #{review.userId && review.userId.fullName ? review.userId.fullName.charAt(0) : "U"}
+                        .review-user-meta
+                          .review-user-name
+                            span #{review.userId ? review.userId.fullName : "Khách hàng VNVIVU"}
+                            if review.orderId
+                              span.badge-verified-buyer
+                                i.fa-solid.fa-circle-check
+                                | Đã trải nghiệm tour
+                          span.review-date #{review.createdAtFormat}
+                      .review-stars
+                        - for (let i = 1; i <= 5; i++)
+                          if i <= review.rating
+                            i.fa-solid.fa-star
+                          else
+                            i.fa-solid.fa-star.empty
+                    .review-comment
+                      p #{review.comment}
+                    if review.images && review.images.length > 0
+                      .review-gallery
+                        each img in review.images
+                          .review-gallery-item
+                            img(src=img alt="Ảnh trải nghiệm thực tế" loading="lazy")
+            else
+              .reviews-empty-state
+                .empty-icon
+                  i.fa-regular.fa-comments
+                h4 Chưa có đánh giá nào cho chuyến đi này
+                p Hãy là một trong những du khách đầu tiên trải nghiệm và chia sẻ cảm nhận của bạn!
+        .inner-right
+          .box-tour-detail
+            .inner-title-main Chuyến Đi Của Bạn
+            .inner-product
+              .inner-image
+                img(
+                  alt="" 
+                  src=tourDetail.avatar
+                  )
+              .inner-info
+                .inner-title #{tourDetail.name}
+                .inner-rating
+                  .inner-stars
+                    - const avgScore = Math.round(tourDetail.ratingAverage || 5);
+                    - for (let i = 1; i <= 5; i++)
+                      i.fa-solid.fa-star(style=i <= avgScore ? "color: #F59E0B;" : "color: #CBD5E1;")
+                  .inner-number #{totalReviews || 0} lượt đánh giá
+            .inner-meta
+              //- .inner-item
+              //-   i.fa-solid.fa-ticket-simple
+              //-   span Mã Tour:
+              //-   span.inner-highlight 28T00001
+              .inner-item
+                i.fa-solid.fa-calendar-days
+                span Thời Gian:
+                span.inner-highlight #{tourDetail.time}
+              .inner-item
+                i.fa-solid.fa-truck-plane
+                span Phương Tiện:
+                span.inner-highlight #{tourDetail.vehicle}
+              .inner-item
+                i.fa-solid.fa-calendar-days
+                span Ngày Khởi Hành:
+                span.inner-highlight #{tourDetail.departureDateFormat}
+            .inner-form
+              label.inner-label Khởi Hành Tại:
+              select(location-from disabled)
+                if departureCity
+                  option(value=departureCity.id selected) #{departureCity.name}
+                else
+                  option(value="") Không xác định
+            .inner-quantity
+              label.inner-label Số Lượng Hành Khách
+              .inner-list
+                .inner-item
+                  .inner-item-label Người lớn:
+                  .inner-item-input
+                    input(
+                      value="1" 
+                      min="0" 
+                      max=tourDetail.stockAdult
+                      type="number"
+                      input-stock-adult
+                      price=tourDetail.priceNewAdult
+                      )
+                  .inner-item-price
+                    span(stock-adult) 1
+                    span x
+                    span.inner-highlight #{(tourDetail.priceNewAdult || 0).toLocaleString("vi-VN")}
+                .inner-item
+                  .inner-item-label Trẻ em:
+                  .inner-item-input
+                    input(
+                      value="0" 
+                      min="0" 
+                      max=tourDetail.stockChildren
+                      type="number"
+                      input-stock-children
+                      price=tourDetail.priceNewChildren
+                      )
+                  .inner-item-price
+                    span(stock-children) 0
+                    span x
+                    span.inner-highlight #{(tourDetail.priceNewChildren || 0).toLocaleString("vi-VN")}
+                .inner-item
+                  .inner-item-label Em bé:
+                  .inner-item-input
+                    input(
+                      value="0" 
+                      min="0" 
+                      max=tourDetail.stockBaby
+                      type="number"
+                      input-stock-baby
+                      price=tourDetail.priceNewBaby
+                      )
+                  .inner-item-price
+                    span(stock-baby) 0
+                    span x
+                    span.inner-highlight #{(tourDetail.priceNewBaby || 0).toLocaleString("vi-VN")}
+            .inner-total
+              .inner-total-label Tổng cộng:
+              .inner-total-price
+                span(total-price) #{(tourDetail.priceNewAdult || 0).toLocaleString("vi-VN")}
+                span đ
+            button.inner-button-add-cart(tour-id=tourDetail.id) Thêm Vào Giỏ Hàng
+  // End Section 10

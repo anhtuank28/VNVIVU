@@ -1,0 +1,123 @@
+//- Widget Chuyên viên Tư vấn Du lịch VNVIVU (Travel Concierge)
+.chatbot-wrapper#chatbotWrapper
+  //- Lời chào nổi (Floating message preview)
+  .chatbot-teaser#chatbotTeaser
+    .chatbot-teaser-text
+      span.teaser-wave 👋
+      | Cần gợi ý chuyến đi? Nhắn với em nhé!
+    button.chatbot-teaser-close#chatbotTeaserClose(type="button" title="Đóng lời chào")
+      i.fa-solid.fa-xmark
+
+  //- Nút mở Chatbot
+  button.chatbot-trigger#chatbotTrigger(type="button" title="Nhắn tin với Tư vấn viên ViVu")
+    .chatbot-trigger-icon
+      i.fa-solid.fa-headset
+    span.chatbot-status-pulse
+
+  //- Cửa sổ hộp thoại Chat
+  .chatbot-window#chatbotWindow.hidden
+    //- Header sang trọng phong cách Concierge
+    .chatbot-header
+      .chatbot-header-info
+        .chatbot-avatar
+          svg.concierge-avatar-svg(viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg")
+            circle(cx="32" cy="32" r="32" fill="#FFFFFF")
+            //- Khuôn mặt & tóc
+            circle(cx="32" cy="25" r="14" fill="#FCD5B5")
+            path(d="M18 24C18 15 24 10 32 10C40 10 46 15 46 24C46 26 44 28 42 27C38 25 35 20 32 20C29 20 26 25 22 27C20 28 18 26 18 24Z" fill="#3D2314")
+            //- Nụ cười & mắt
+            circle(cx="27" cy="24" r="1.8" fill="#3D2314")
+            circle(cx="37" cy="24" r="1.8" fill="#3D2314")
+            path(d="M28 29C29.5 32 34.5 32 36 29" stroke="#E05757" stroke-width="1.8" stroke-linecap="round")
+            //- Tai nghe chuyên viên (Headset)
+            path(d="M18 26C17 19 22 13 32 13C42 13 47 19 46 26" stroke="#4502C7" stroke-width="2.5" stroke-linecap="round")
+            rect(x="15" y="22" width="4" height="8" rx="2" fill="#4502C7")
+            rect(x="45" y="22" width="4" height="8" rx="2" fill="#4502C7")
+            path(d="M17 28C17 35 24 37 27 37" stroke="#4502C7" stroke-width="2" stroke-linecap="round")
+            circle(cx="27.5" cy="37" r="2" fill="#4502C7")
+            //- Trang phục tiếp tân
+            path(d="M12 58C12 46 20 42 32 42C44 42 52 46 52 58" fill="#4502C7")
+            path(d="M28 42L32 50L36 42" fill="#FFFFFF")
+            polygon(points="32,45 34,48 32,53 30,48" fill="#FFB703")
+          span.chatbot-status-dot(title="Đang trực tuyến")
+        .chatbot-meta
+          .chatbot-title-row
+            h4 Tư vấn viên ViVu
+            span.verified-badge(title="Đã xác thực bởi VNVIVU")
+              i.fa-solid.fa-circle-check
+          p.status
+            span.dot
+            | Trực tuyến • Phản hồi ngay tức thì
+
+      .chatbot-header-actions
+        button.btn-header-action#chatbotClearBtn(type="button" title="Làm mới cuộc trò chuyện")
+          i.fa-solid.fa-arrow-rotate-left
+        button.btn-header-action#chatbotCloseBtn(type="button" title="Thu nhỏ khung chat")
+          i.fa-solid.fa-xmark
+
+    //- Thanh gợi ý nhanh phong cách Modern Pills
+    .chatbot-suggestions#chatbotSuggestions
+      button.suggestion-chip(data-prompt="🔥 Gợi ý các điểm đến hot nhất mùa này")
+        span.chip-icon ✨
+        | Điểm đến hot
+      button.suggestion-chip(data-prompt="💰 Tư vấn tour du lịch ngân sách tiết kiệm dưới 3 triệu")
+        span.chip-icon 💸
+        | Tour tiết kiệm
+      button.suggestion-chip(data-prompt="🏖️ Gợi ý các tour du lịch biển đảo nghỉ dưỡng")
+        span.chip-icon 🏖️
+        | Nghỉ dưỡng biển
+      button.suggestion-chip(data-prompt="👑 Tour có dịch vụ cao cấp và đắt nhất hiện tại là tour nào?")
+        span.chip-icon 👑
+        | Tour cao cấp
+      button.suggestion-chip(data-prompt="💳 Website hỗ trợ những phương thức thanh toán nào?")
+        span.chip-icon 💳
+        | Thanh toán
+
+    //- Khu vực tin nhắn hội thoại
+    .chatbot-body#chatbotBody
+      //- Lời chào khởi đầu ấm áp
+      .chat-message.bot-message
+        .message-avatar
+          svg.avatar-mini-svg(viewBox="0 0 64 64" fill="none")
+            circle(cx="32" cy="32" r="32" fill="#EDE9FE")
+            circle(cx="32" cy="25" r="14" fill="#FCD5B5")
+            path(d="M18 24C18 15 24 10 32 10C40 10 46 15 46 24Z" fill="#3D2314")
+            circle(cx="27" cy="24" r="1.8" fill="#3D2314")
+            circle(cx="37" cy="24" r="1.8" fill="#3D2314")
+            path(d="M28 29C29.5 32 34.5 32 36 29" stroke="#E05757" stroke-width="1.8")
+            path(d="M12 58C12 46 20 42 32 42C44 42 52 46 52 58" fill="#4502C7")
+        .message-content
+          .message-bubble
+            p Dạ em chào Quý khách! Em là <strong>ViVu</strong> - Chuyên viên hỗ trợ chuyến đi của VNVIVU ✈️.
+            p Em rất vui được đồng hành để giúp Anh/Chị chọn được chuyến đi ưng ý với mức giá tốt nhất. Hôm nay mình đang lên kế hoạch vi vu ở đâu ạ? 😊
+          span.message-time Vừa xong
+
+      //- Typing indicator
+      .chat-message.bot-message.typing-indicator#chatbotTypingIndicator.hidden
+        .message-avatar
+          svg.avatar-mini-svg(viewBox="0 0 64 64" fill="none")
+            circle(cx="32" cy="32" r="32" fill="#EDE9FE")
+            circle(cx="32" cy="25" r="14" fill="#FCD5B5")
+            path(d="M12 58C12 46 20 42 32 42C44 42 52 46 52 58" fill="#4502C7")
+        .message-content
+          .message-bubble.typing-bubble
+            span.dot
+            span.dot
+            span.dot
+
+    //- Khung nhập tin nhắn
+    .chatbot-footer
+      form#chatbotForm
+        .input-group
+          input#chatbotInput(
+            type="text" 
+            placeholder="Hỏi em về tour, giá vé, lịch trình..." 
+            autocomplete="off"
+            maxlength="500"
+          )
+          button#chatbotSendBtn(type="submit" title="Gửi tin nhắn")
+            i.fa-solid.fa-paper-plane
+      .chatbot-footer-caption
+        span.caption-lock
+          i.fa-solid.fa-shield-halved
+        | Bảo mật & Hỗ trợ tận tâm bởi VNVIVU

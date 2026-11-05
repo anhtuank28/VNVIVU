@@ -1,0 +1,115 @@
+extends ../layouts/default.pug
+
+block main
+  // Section 11
+  .section-11(page-cart)
+    .container
+      .inner-wrap
+        .inner-head
+          .inner-title Giỏ Hàng
+          a.inner-back(href="/")
+            | Quay lại mua hàng
+            i.fa-solid.fa-angle-right
+        .inner-tour-list(cart-list)
+        .inner-coupon
+          form#coupon-form(action="" style="position: relative; overflow: visible;")
+            .coupon-input-wrapper(style="position: relative; flex: 1;")
+              input#coupon-input(
+                name="coupon" 
+                placeholder="Nhập mã giảm giá" 
+                type="text"
+                autocomplete="off"
+                style="width: 100%;"
+              )
+              .coupon-dropdown#coupon-dropdown(style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 999; max-height: 250px; overflow-y: auto; margin-top: 5px;")
+                if coupons && coupons.length > 0
+                  each item in coupons
+                    .coupon-item(data-code=item.code style="padding: 12px 15px; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s;")
+                      div(style="font-weight: bold; color: #2563eb; font-size: 16px; margin-bottom: 4px;") #{item.code}
+                      div(style="font-size: 13px; color: #555;") Giảm: #{item.type == 'percent' ? item.value + '%' : item.value.toLocaleString('vi-VN') + 'đ'}
+                      if item.minOrderValue > 0
+                        div(style="font-size: 12px; color: #888; margin-top: 2px;") Đơn tối thiểu: #{item.minOrderValue.toLocaleString('vi-VN')}đ
+                else
+                  .coupon-item(style="padding: 15px; color: #999; text-align: center;") Không có mã giảm giá nào
+            button(type="submit") Dùng Mã
+        .inner-list-price
+          .inner-item
+            .inner-label Tạm tình:
+            .inner-price
+              span(cart-sub-total) 0
+              span đ
+          .inner-item
+            .inner-label Giảm:
+            .inner-price 
+              span(cart-discount) 0
+              span đ
+          .inner-item
+            .inner-label Thanh toán:
+            .inner-price-highlight
+              span(cart-total) 0
+              span đ
+  // End Section 11
+  // Section 12
+  .section-12
+    .container
+      .inner-wrap
+        form#order-form(action="")
+          .inner-info
+            .inner-title-main Thông Tin Khách Hàng
+            .inner-inputs
+              .inner-input
+                input#full-name-input(
+                  placeholder="Họ và tên" 
+                  name="fullName" 
+                  type="text"
+                  )
+              .inner-input
+                input#phone-input(
+                  placeholder="Số điện thoại" 
+                  name="phone" 
+                  type="text"
+                  )
+            textarea(
+              placeholder="Ghi chú" 
+              name="note"
+              )
+          .inner-method
+            .inner-title-main Chọn phương thức thanh toán
+            .inner-list
+              .inner-item
+                input#methodMoney(
+                  checked="" 
+                  value="money" 
+                  name="method" 
+                  type="radio"
+                  )
+                label(for="methodMoney") Thanh toán tiền mặt khi đi tour
+              .inner-item
+                input#methodZaloPay(
+                  value="zalopay" 
+                  name="method" 
+                  type="radio"
+                  )
+                label(for="methodZaloPay") ZaloPay
+              .inner-item
+                input#methodVNPay(
+                  value="vnpay" 
+                  name="method" 
+                  type="radio"
+                  )
+                label(for="methodVNPay") VNPay
+              .inner-item
+                input#methodBank(
+                  value="bank" 
+                  name="method" 
+                  type="radio"
+                  )
+                label(for="methodBank") Chuyển khoản ngân hàng
+            .inner-info-bank
+              .inner-title Thông tin chuyển khoản
+              .inner-text Ngân hàng : Vietcombank
+              .inner-text Tên tài khoản: Le Van A
+              .inner-text STK: 0123456789
+          .inner-button
+            button(type="submit") ĐẶT TOUR
+  // End Section 12

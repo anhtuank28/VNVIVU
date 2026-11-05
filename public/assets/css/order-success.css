@@ -1,0 +1,352 @@
+/* order-success.css - E-Ticket UI Revamp */
+:root {
+  --primary: #0369A1;
+  --primary-light: #e0f2fe;
+  --success: #10B981;
+  --success-light: #d1fae5;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --bg-color: #F8FAFC;
+  --card-bg: #FFFFFF;
+}
+
+body {
+  background-color: var(--bg-color);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.success-page {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.success-wrapper {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Header */
+.success-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.icon-circle {
+  width: 80px;
+  height: 80px;
+  background-color: var(--success-light);
+  color: var(--success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  margin: 0 auto 24px;
+  box-shadow: 0 0 0 10px rgba(16, 185, 129, 0.1);
+  animation: scale-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.success-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.success-header p {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.success-header p b {
+  color: var(--text-main);
+}
+
+/* Receipt Card */
+.receipt-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.receipt-header {
+  padding: 30px;
+  border-bottom: 2px dashed #E2E8F0;
+}
+
+.receipt-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meta-item:last-child {
+  text-align: right;
+}
+
+.meta-item span {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.meta-item strong {
+  font-size: 18px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.receipt-body {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tour-item {
+  display: flex;
+  gap: 16px;
+}
+
+.tour-image {
+  flex-shrink: 0;
+}
+
+.tour-image img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tour-details {
+  flex-grow: 1;
+}
+
+.tour-details h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.detail-row i {
+  color: var(--primary);
+}
+
+.detail-row b {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.pax-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pax-tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-color);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.pax-tag span {
+  color: var(--text-muted);
+}
+
+.pax-tag b {
+  color: var(--text-main);
+}
+
+.receipt-footer {
+  padding: 30px;
+  background: #F8FAFC;
+  border-radius: 0 0 20px 20px;
+  border-top: 2px dashed #E2E8F0;
+}
+
+.payment-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.payment-info span {
+  font-size: 15px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.badge-payment {
+  background: var(--success-light);
+  color: var(--success);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.total-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-info span {
+  font-size: 16px;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.total-amount {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* Receipt cutouts */
+.receipt-cut {
+  position: absolute;
+  bottom: 120px; /* Adjust based on footer height */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 1;
+}
+
+.cut-circle-left,
+.cut-circle-right {
+  position: absolute;
+  top: -15px;
+  width: 30px;
+  height: 30px;
+  background-color: var(--bg-color);
+  border-radius: 50%;
+}
+
+.cut-circle-left {
+  left: -15px;
+  box-shadow: inset -4px 0 6px -4px rgba(0,0,0,0.05);
+}
+
+.cut-circle-right {
+  right: -15px;
+  box-shadow: inset 4px 0 6px -4px rgba(0,0,0,0.05);
+}
+
+/* Buttons */
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.action-buttons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(3, 105, 161, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: #02507e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(3, 105, 161, 0.3);
+}
+
+.btn-outline {
+  background-color: white;
+  color: var(--text-main);
+  border: 1px solid #E2E8F0;
+}
+
+.btn-outline:hover {
+  background-color: #F1F5F9;
+  border-color: #CBD5E1;
+}
+
+.error-card {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+@keyframes scale-in {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 576px) {
+  .tour-item {
+    flex-direction: column;
+  }
+  .tour-image img {
+    width: 100%;
+    height: 160px;
+  }
+  .receipt-meta {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .meta-item:last-child {
+    text-align: left;
+  }
+  .action-buttons {
+    flex-direction: column;
+  }
+  .receipt-cut {
+    bottom: 140px;
+  }
+}

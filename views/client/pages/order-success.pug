@@ -1,0 +1,73 @@
+extends ../layouts/default.pug
+
+block head
+  link(rel="stylesheet", href="/assets/css/order-success.css")
+
+block main
+  .success-page
+    .container
+      .success-wrapper
+        .success-header(data-aos="fade-down" data-aos-duration="600")
+          .icon-circle
+            i.fa-solid.fa-check
+          h1 Đặt Tour Thành Công!
+          p Cảm ơn <b>#{order.fullName}</b>. Hành trình tuyệt vời của bạn đã được chúng tôi ghi nhận.
+
+        if order
+          .receipt-card(data-aos="fade-up" data-aos-duration="800" data-aos-delay="200")
+            .receipt-header
+              .receipt-meta
+                .meta-item
+                  span Mã Đơn Hàng
+                  strong ##{order.orderCode}
+                .meta-item
+                  span Số Điện Thoại
+                  strong #{order.phone}
+            
+            .receipt-body
+              each item in order.items
+                .tour-item
+                  .tour-image
+                    img(src=item.avatar, alt=item.name)
+                  .tour-details
+                    h3 #{item.name}
+                    .detail-row
+                      i.fa-regular.fa-calendar
+                      span Khởi hành: <b>#{new Date(item.departureDate).toLocaleDateString('vi-VN')}</b>
+                    
+                    .pax-list
+                      if item.quantityAdult > 0
+                        .pax-tag
+                          span Người lớn x#{item.quantityAdult}
+                          b #{(item.priceNewAdult * item.quantityAdult).toLocaleString('vi-VN')}đ
+                      if item.quantityChildren > 0
+                        .pax-tag
+                          span Trẻ em x#{item.quantityChildren}
+                          b #{(item.priceNewChildren * item.quantityChildren).toLocaleString('vi-VN')}đ
+                      if item.quantityBaby > 0
+                        .pax-tag
+                          span Em bé x#{item.quantityBaby}
+                          b #{(item.priceNewBaby * item.quantityBaby).toLocaleString('vi-VN')}đ
+            
+            .receipt-footer
+              .payment-info
+                span Phương thức thanh toán
+                .badge-payment #{order.paymentMethodName}
+              .total-info
+                span Tổng thanh toán
+                .total-amount #{order.total.toLocaleString('vi-VN')}đ
+            .receipt-cut
+              .cut-circle-left
+              .cut-circle-right
+
+        else
+          .error-card
+            p Không tìm thấy thông tin đơn hàng của bạn.
+
+        .action-buttons(data-aos="fade-up" data-aos-duration="600" data-aos-delay="400")
+          a.btn-outline(href="/tour")
+            i.fa-solid.fa-compass
+            | Khám phá thêm tour
+          a.btn-primary(href="/")
+            i.fa-solid.fa-house
+            | Về trang chủ

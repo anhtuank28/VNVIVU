@@ -1,0 +1,17 @@
+header.header
+  .inner-logo
+    a(href=`/${pathAdmin}/dashboard`)
+      span VN
+      span VIVU
+  .inner-wrap
+    .inner-notify
+      img(src="/admin/assets/images/icon-bell.svg", alt="")
+      span 6
+    .inner-account
+      .inner-avatar
+        img(src=account.avatar, alt=account.fullName)
+      .inner-text
+        .inner-name #{account.fullName}
+        .inner-role #{account.roleName}
+    button.inner-button-menu
+      <i class="fa-solid fa-bars"></i>

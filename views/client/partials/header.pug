@@ -1,0 +1,65 @@
+- settingWebsiteInfo = settingWebsiteInfo || {}
+- categoryList = categoryList || []
+
+mixin sub-menu(items)
+  ul
+    each item in items
+      li
+        a(href=`/category/${item.slug}`) #{item.name}
+        if item.children && item.children.length > 0
+          i.fa-solid.fa-caret-right
+          +sub-menu(item.children)
+
+// Header
+header.header(class=(!isHome ? "header--normal" : ""))
+  .container
+    .inner-wrap
+      // Menu Mobile
+      button.inner-menu-mobile
+        i.fa-solid.fa-bars
+
+      // Logo
+      .inner-logo
+        a(href="/")
+          span VN
+          span VIVU
+
+      // Menu
+      nav.inner-menu
+        ul
+          li
+            a(href="/") Trang chủ
+          each item in categoryList
+            li
+              a(href=`/category/${item.slug}`) #{item.name}
+              if(item.children && item.children.length > 0)
+                i.fa-solid.fa-caret-down
+                +sub-menu(item.children)
+
+          li
+            a(href="/article") Tin tức
+          li
+            a(href="/contact") Liên hệ
+
+        .inner-overlay
+
+      .inner-actions(style="display: flex; align-items: center; gap: 15px;")
+        // Cart
+        .inner-cart
+          a(href="/cart")
+            img(
+              alt="Cart" 
+              src="/assets/images/icon-cart.svg"
+            )
+            span(mini-cart) 0
+        
+        // Auth
+        .inner-auth(style="display: flex; align-items: center; gap: 8px;")
+          if user
+            span(class="auth-user-name") Xin chào, #{user.fullName}
+            a(href="/auth/logout" class="btn-auth-logout") <i class="fa-solid fa-sign-out-alt"></i> Thoát
+          else
+            a(href="/auth/login" class="btn-auth-login") Đăng nhập
+            a(href="/auth/register" class="btn-auth-register") Đăng ký
+
+// End Header

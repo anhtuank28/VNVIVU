@@ -1,0 +1,56 @@
+// Footer
+// Footer
+footer.footer
+  .container
+    .footer__grid
+      .footer__col
+        .footer__logo
+          a(href="/")
+            span VN
+            span VIVU
+        p.footer__desc #{settingWebsiteInfo.footerDescription ? settingWebsiteInfo.footerDescription : 'Khám phá thế giới qua những chuyến đi tuyệt vời cùng VnVivu. Chúng tôi mang đến những trải nghiệm du lịch đẳng cấp và an toàn.'}
+        .footer__socials
+          a(target="_blank" href=(settingWebsiteInfo.facebook ? settingWebsiteInfo.facebook : "#"))
+            i.fa-brands.fa-facebook-f
+          a(target="_blank" href=(settingWebsiteInfo.instagram ? settingWebsiteInfo.instagram : "#"))
+            i.fa-brands.fa-instagram
+          a(target="_blank" href=(settingWebsiteInfo.twitter ? settingWebsiteInfo.twitter : "#"))
+            i.fa-brands.fa-twitter
+          a(target="_blank" href=(settingWebsiteInfo.youtube ? settingWebsiteInfo.youtube : "#"))
+            i.fa-brands.fa-youtube
+      .footer__col
+        h3.footer__title Về Chúng Tôi
+        ul.footer__links
+          li: a(href="#") Trang chủ
+          li: a(href="#") Tour Trong Nước
+          li: a(href="#") Tour Nước Ngoài
+          li: a(href="#") Tin Tức
+          li: a(href="#") Liên Hệ
+      .footer__col
+        h3.footer__title Liên hệ & Thông tin
+        ul.footer__links
+          if settingWebsiteInfo.address
+            li(style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; color: inherit;")
+              i.fa-solid.fa-location-dot(style="margin-top: 4px;")
+              span #{settingWebsiteInfo.address}
+          if settingWebsiteInfo.phone
+            li(style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: inherit;")
+              i.fa-solid.fa-phone
+              span #{settingWebsiteInfo.phone}
+          if settingWebsiteInfo.email
+            li(style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: inherit;")
+              i.fa-solid.fa-envelope
+              span #{settingWebsiteInfo.email}
+          li: a(href="/privacy-policy") Điều khoản dịch vụ
+          li: a(href="/terms-of-service") Chính sách bảo mật
+          li: a(href="#") Hướng dẫn đặt tour
+      .footer__col
+        h3.footer__title Đăng Ký Nhận Tin
+        p.footer__newsletter-desc Nhận thông báo về các ưu đãi tour mới nhất.
+        form#email-form.footer__newsletter(action="#")
+          input#email-input(name="email" placeholder="Nhập email của bạn..." type="email")
+          button(type="submit")
+            i.fa-solid.fa-paper-plane
+    .footer__bottom
+      p.footer__copyright #{settingWebsiteInfo.copyright ? settingWebsiteInfo.copyright : `© 2024 ${settingWebsiteInfo.websiteName || 'VnVivu'}. All rights reserved.`}
+// End Footer

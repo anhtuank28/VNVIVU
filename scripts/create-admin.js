@@ -31,8 +31,8 @@ async function createSuperAdmin() {
     }
 
     // 2. Tạo tài khoản Super Admin
-    const email = "superadmin@vnvivu.com";
-    const rawPassword = "Admin@123456"; // Đủ chữ hoa, thường, số, ký tự đặc biệt, >= 8 ký tự
+    const email = "admin@vnvivu.com";
+    const rawPassword = "Anhtuan28112005#";
 
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(rawPassword, salt);

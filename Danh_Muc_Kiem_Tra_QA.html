@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Danh Mục Kiểm Tra QA</title>
+<style>
+  table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+  th, td { border: 1px solid black; padding: 8px; text-align: left; }
+  th { background-color: #f2f2f2; }
+</style>
+</head>
+<body>
+<h1>4.5. Thiết lập danh mục kiểm tra (Bảng kiểm)</h1>
+<p>Dựa trên yêu cầu của dự án VNVIVU (hệ thống đặt tour du lịch trên nền tảng Node.js/Express và MongoDB), dưới đây là các bảng kiểm tra (bảng rà soát) chất lượng ở từng giai đoạn.</p>
+
+<h3>1. Bảng kiểm tra tài liệu yêu cầu (SRS)</h3>
+<table>
+<tr><th>TT</th><th>Nội dung kiểm tra</th><th>Tiêu chí đạt</th><th>Kết quả (Đạt/Không)</th><th>Ghi chú</th></tr>
+<tr><td>1</td><td>Đầy đủ chức năng nghiệp vụ</td><td>Bao gồm đầy đủ các luồng: tìm kiếm tour, đặt tour, quản lý danh mục, xác thực người dùng.</td><td></td><td></td></tr>
+<tr><td>2</td><td>Yêu cầu phi chức năng</td><td>Phải quy định rõ thời gian phản hồi (< 3s), khả năng chịu tải, và hiển thị tốt trên di động.</td><td></td><td></td></tr>
+<tr><td>3</td><td>Thuật ngữ thống nhất</td><td>Các từ như "Đơn hàng", "Booking", "Khách hàng", "Người dùng" phải được sử dụng nhất quán.</td><td></td><td></td></tr>
+</table>
+
+<h3>2. Bảng kiểm tra thiết kế Cơ sở dữ liệu (MongoDB)</h3>
+<table>
+<tr><th>TT</th><th>Bảng (Collection) cần kiểm tra</th><th>Trường bắt buộc</th><th>Ràng buộc / Kiểu dữ liệu</th><th>Kết quả</th><th>Ghi chú</th></tr>
+<tr><td>1</td><td>Tours (Danh sách Tour)</td><td>title, slug, price, stock</td><td>price > 0, stock >= 0, slug phải là unique</td><td></td><td></td></tr>
+<tr><td>2</td><td>Orders (Đơn đặt tour)</td><td>userInfo, tourId, status</td><td>status phải thuộc danh sách (pending, success, cancelled)</td><td></td><td></td></tr>
+<tr><td>3</td><td>Users (Tài khoản khách)</td><td>email, password</td><td>email phải đúng định dạng và unique, password mã hóa bcrypt</td><td></td><td></td></tr>
+<tr><td>4</td><td>AccountAdmin (Tài khoản Admin)</td><td>email, password, role_id</td><td>email unique, role_id liên kết hợp lệ với bảng Roles</td><td></td><td></td></tr>
+<tr><td>5</td><td>Roles (Nhóm quyền)</td><td>title, permissions</td><td>permissions lưu dưới dạng mảng (array) các chuỗi phân quyền</td><td></td><td></td></tr>
+<tr><td>6</td><td>Categories (Danh mục)</td><td>title, slug, status</td><td>slug unique, trạng thái active/inactive</td><td></td><td></td></tr>
+<tr><td>7</td><td>Articles (Bài viết/Tin tức)</td><td>title, content, slug</td><td>title không được rỗng, slug sinh tự động và unique</td><td></td><td></td></tr>
+<tr><td>8</td><td>Cities (Thành phố/Tỉnh)</td><td>title, slug</td><td>Dữ liệu chuẩn xác, slug không trùng lặp</td><td></td><td></td></tr>
+<tr><td>9</td><td>Coupons (Mã giảm giá)</td><td>code, discount, expireAt</td><td>code viết hoa không dấu, expireAt hợp lệ (tương lai)</td><td></td><td></td></tr>
+<tr><td>10</td><td>Contacts (Liên hệ)</td><td>fullName, email, content</td><td>email phải kiểm tra đúng định dạng regex</td><td></td><td></td></tr>
+<tr><td>11</td><td>ForgotPasswords (Quên MK)</td><td>email, otp, expireAt</td><td>otp là 6 chữ số, thời gian hết hạn chặt chẽ (VD: 3 phút)</td><td></td><td></td></tr>
+<tr><td>12</td><td>SettingWebsites (Cài đặt)</td><td>logo, phone, address</td><td>Chỉ duy trì 1 bản ghi cấu hình hệ thống duy nhất</td><td></td><td></td></tr>
+</table>
+
+<h3>3. Bảng kiểm tra tiêu chuẩn mã nguồn (Backend - Node.js/Express)</h3>
+<table>
+<tr><th>TT</th><th>Hạng mục</th><th>Quy tắc</th><th>Ví dụ đạt chuẩn</th><th>Kết quả</th></tr>
+<tr><td>1</td><td>Đặt tên biến / hàm</td><td>camelCase, tiếng Anh, mô tả rõ hành động hoặc dữ liệu</td><td><code>tourDetail</code>, <code>getTourBySlug()</code> thay vì <code>chitiet</code>, <code>lay_tour()</code></td><td></td></tr>
+<tr><td>2</td><td>Xử lý ngoại lệ</td><td>Luôn dùng try-catch trong các controllers gọi tới Database</td><td>Có catch (error) { res.status(500)... } rõ ràng</td><td></td></tr>
+<tr><td>3</td><td>Quản lý biến môi trường</td><td>Không hardcode mật khẩu, chuỗi kết nối DB trong code</td><td>Dùng process.env.MONGO_URL</td><td></td></tr>
+</table>
+
+<h3>4. Bảng kiểm tra kịch bản kiểm thử (Test case) chức năng "Đặt Tour"</h3>
+<table>
+<tr><th>TT</th><th>Kịch bản kiểm tra</th><th>Đầu vào</th><th>Kết quả mong đợi</th><th>Thực tế</th></tr>
+<tr><td>1</td><td>Đặt tour khi nhập đủ thông tin hợp lệ</td><td>Tên, SĐT, Email hợp lệ, số lượng khách = 2</td><td>Hệ thống báo thành công, tạo mã đơn hàng, giảm số lượng chỗ trống của tour</td><td></td></tr>
+<tr><td>2</td><td>Đặt tour vượt quá số chỗ còn trống</td><td>Số lượng khách nhập vào > số chỗ (stock) hiện có</td><td>Hệ thống báo lỗi "Không đủ chỗ trống", không tạo đơn</td><td></td></tr>
+<tr><td>3</td><td>Bỏ trống số điện thoại</td><td>Nhập Tên, Email nhưng để trống SĐT</td><td>Hệ thống chặn ở client-side và báo lỗi yêu cầu nhập SĐT</td><td></td></tr>
+<tr><td>4</td><td>Áp dụng mã giảm giá không hợp lệ/hết hạn</td><td>Nhập mã coupon sai hoặc đã hết hạn</td><td>Hệ thống báo lỗi mã không hợp lệ, không áp dụng giảm giá</td><td></td></tr>
+<tr><td>5</td><td>Nhập số lượng khách không hợp lệ</td><td>Nhập số lượng khách = 0 hoặc số âm (-1)</td><td>Hệ thống báo lỗi, yêu cầu số lượng khách tối thiểu là 1</td><td></td></tr>
+<tr><td>6</td><td>Nhập Email sai định dạng</td><td>Nhập Email thiếu @ hoặc đuôi domain (VD: <code>abc@.com</code>)</td><td>Hệ thống chặn lại và yêu cầu nhập đúng định dạng Email</td><td></td></tr>
+<tr><td>7</td><td>Bỏ trống toàn bộ thông tin bắt buộc</td><td>Nhấn nút "Đặt ngay" khi form hoàn toàn trống</td><td>Hệ thống chặn thao tác, highlight đỏ tất cả các trường bắt buộc</td><td></td></tr>
+<tr><td>8</td><td>Áp dụng mã giảm giá hợp lệ</td><td>Nhập mã coupon hợp lệ và còn thời hạn</td><td>Hệ thống trừ đúng số tiền khuyến mãi vào tổng hóa đơn, thông báo áp dụng thành công</td><td></td></tr>
+<tr><td>9</td><td>Đặt tour với số lượng khách sát giới hạn</td><td>Nhập số lượng khách bằng chính xác số chỗ (stock) còn lại</td><td>Hệ thống cho phép đặt thành công, cập nhật số chỗ còn trống của tour về 0</td><td></td></tr>
+<tr><td>10</td><td>Nhập mã độc (XSS) vào ô Ghi chú</td><td>Nhập chuỗi <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> vào ô Ghi chú</td><td>Hệ thống mã hóa (escape) ký tự đặc biệt, lưu an toàn vào DB, không thực thi script</td><td></td></tr>
+</table>
+
+<h3>5. Bảng kiểm tra Giao diện và Trải nghiệm người dùng (UI/UX)</h3>
+<table>
+<tr><th>TT</th><th>Thành phần</th><th>Tiêu chí</th><th>Hình thức kiểm tra</th><th>Đạt/Chưa</th></tr>
+<tr><td>1</td><td>Tính đáp ứng (Responsive)</td><td>Giao diện danh sách tour không bị vỡ trên màn hình iPhone, thẻ tour xếp dọc.</td><td>Mở DevTools (F12) chuyển sang chế độ Mobile</td><td></td></tr>
+<tr><td>2</td><td>Phản hồi thao tác (Feedback)</td><td>Nút "Đặt ngay" phải có hiệu ứng xoay (loading) và bị mờ đi khi đang chờ server phản hồi.</td><td>Bấm đặt tour và quan sát nút bấm</td><td></td></tr>
+<tr><td>3</td><td>Thông báo lỗi Form</td><td>Báo lỗi trực tiếp dưới ô input bằng chữ đỏ (không dùng window.alert).</td><td>Cố tình nhập sai email và bấm submit</td><td></td></tr>
+</table>
+
+<h3>6. Bảng kiểm tra Bảo mật</h3>
+<table>
+<tr><th>TT</th><th>Hạng mục</th><th>Phương pháp kiểm tra</th><th>Công cụ</th><th>Kết quả</th></tr>
+<tr><td>1</td><td>Bảo mật mật khẩu</td><td>Kiểm tra trong database xem mật khẩu đã được băm (hash) chưa.</td><td>MongoDB Compass / Studio 3T</td><td></td></tr>
+<tr><td>2</td><td>Phân quyền truy cập</td><td>Thử truy cập route <code>/admin/tours</code> bằng tài khoản khách hàng thông thường.</td><td>Trình duyệt (Postman)</td><td></td></tr>
+<tr><td>3</td><td>Tấn công XSS</td><td>Thử nhập đoạn script <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> vào form tìm kiếm hoặc bình luận.</td><td>Trình duyệt</td><td></td></tr>
+</table>
+
+<h3>7. Bảng kiểm tra quy trình Triển khai (Deployment)</h3>
+<table>
+<tr><th>TT</th><th>Công việc</th><th>Yêu cầu</th><th>Người phụ trách</th><th>Hoàn thành</th></tr>
+<tr><td>1</td><td>Cấu hình biến môi trường trên Server</td><td>Đảm bảo server (Render/Vercel) đã được khai báo đủ các biến từ file .env.</td><td>Lập trình viên Backend</td><td></td></tr>
+<tr><td>2</td><td>Kiểm tra kết nối DB Production</td><td>Kết nối thành công tới MongoDB Atlas (không dùng localhost).</td><td>Lập trình viên Backend</td><td></td></tr>
+<tr><td>3</td><td>Chạy thử luồng chính trên môi trường thật</td><td>Truy cập link web thật, tìm tour và đặt thử 1 đơn hàng xem có lỗi không.</td><td>Nhân viên kiểm thử</td><td></td></tr>
+</table>
+
+<h3>8. Bảng tiêu chí đánh giá chất lượng cuối dự án</h3>
+<table>
+<tr><th>TT</th><th>Chỉ số đo lường</th><th>Mục tiêu</th><th>Thực tế</th><th>Đánh giá</th></tr>
+<tr><td>1</td><td>Tỷ lệ kịch bản kiểm thử (Test case) đạt</td><td>>= 95%</td><td></td><td></td></tr>
+<tr><td>2</td><td>Số lượng lỗi nghiêm trọng (Critical bugs)</td><td>0</td><td></td><td></td></tr>
+<tr><td>3</td><td>Thời gian tải trang (LCP - Hiệu năng)</td><td>< 2.5 giây</td><td></td><td></td></tr>
+</table>
+
+<h3>9. Danh mục kiểm tra QA (Đảm bảo chất lượng)</h3>
+<table>
+<tr><th>TT</th><th>Hạng mục rà soát</th><th>Đã kiểm tra (v)</th><th>Ghi chú</th></tr>
+<tr><td>1</td><td>Các yêu cầu nghiệp vụ (User stories) đều có tiêu chí nghiệm thu rõ ràng</td><td></td><td></td></tr>
+<tr><td>2</td><td>Chức năng cốt lõi (Đặt tour, xác thực) đã được kiểm tra kỹ</td><td></td><td></td></tr>
+<tr><td>3</td><td>Giao diện đã được đối chiếu, đảm bảo chuẩn với thiết kế ban đầu</td><td></td><td></td></tr>
+<tr><td>4</td><td>Mã nguồn đã được dọn dẹp, xóa bỏ các dòng code thừa (console.log, comment rác)</td><td></td><td></td></tr>
+</table>
+
+<h3>10. Bảng rà soát mã nguồn (Code Review)</h3>
+<table>
+<tr><th>TT</th><th>Tiêu chí rà soát</th><th>Mức độ ưu tiên</th><th>Ghi chú</th></tr>
+<tr><td>1</td><td>Mã nguồn dễ đọc, các controller được tách biệt rõ ràng (Auth, Tour, Order).</td><td>Cao</td><td></td></tr>
+<tr><td>2</td><td>Không có hiện tượng lặp mã (Code duplication) ở các module xử lý giao diện (Pug mixins).</td><td>Trung bình</td><td></td></tr>
+<tr><td>3</td><td>Tuân thủ quy ước đặt tên (CamelCase cho biến, PascalCase cho Models).</td><td>Cao</td><td></td></tr>
+<tr><td>4</td><td>Xử lý lỗi (Error handling) rõ ràng, trả về mã trạng thái HTTP chuẩn (400, 404, 500).</td><td>Cao</td><td></td></tr>
+</table>
+
+<h2>4.7. Thiết lập quy trình QA (Đảm bảo chất lượng)</h2>
+<p>Thiết lập quy trình QA là việc xây dựng các hướng dẫn chi tiết, bước thực hiện cụ thể nhằm kiểm soát chất lượng phần mềm trong suốt vòng đời phát triển dự án <strong>VNVIVU</strong>. Mục tiêu chính bao gồm: đảm bảo tính nhất quán trong team, phòng ngừa rủi ro (lỗi thanh toán, sai lệch dữ liệu tour), và đo lường hiệu quả.</p>
+<p>Dưới đây là các quy trình cốt lõi được áp dụng cho dự án:</p>
+
+<h3>4.7.1. Quy trình Kiểm tra mã nguồn (Code Review)</h3>
+<ul>
+  <li><strong>Chuẩn bị:</strong> Lập trình viên hoàn thiện tính năng Đặt tour và tạo Pull Request (PR) trên GitHub.</li>
+  <li><strong>Kiểm tra tĩnh:</strong> Hệ thống tự động kiểm tra lỗi cú pháp (Syntax) bằng công cụ ESLint và Prettier.</li>
+  <li><strong>Rà soát chéo (Peer Review):</strong> Một thành viên khác trong nhóm đọc code, kiểm tra logic nghiệp vụ, đảm bảo bắt lỗi ngoại lệ (<code>try-catch</code>) và không có rò rỉ bảo mật.</li>
+  <li><strong>Phê duyệt:</strong> Code chỉ được phép gộp (merge) vào nhánh chính khi người rà soát xác nhận đạt chuẩn.</li>
+</ul>
+
+<h3>4.7.2. Quy trình Kiểm thử phần mềm (Software Testing)</h3>
+<ul>
+  <li><strong>Lên kế hoạch:</strong> Xác định phạm vi kiểm thử ưu tiên cao nhất là module Quản lý Tour và Giỏ hàng.</li>
+  <li><strong>Thiết kế kịch bản:</strong> Viết các Test Cases chi tiết với đầy đủ dữ liệu đầu vào và kết quả mong đợi.</li>
+  <li><strong>Thực thi:</strong>
+    <ul>
+      <li><em>Unit Test:</em> Kiểm tra tính đúng đắn của các hàm đơn lẻ (ví dụ: hàm tính tổng tiền tour).</li>
+      <li><em>System Test:</em> Kiểm tra toàn bộ luồng hệ thống từ thao tác tìm kiếm của người dùng đến khi lưu thành công vào Database.</li>
+    </ul>
+  </li>
+  <li><strong>Nghiệm thu (UAT):</strong> Chạy thử với luồng người dùng cuối cùng để xác nhận phần mềm dễ sử dụng.</li>
+</ul>
+
+<h3>4.7.3. Quy trình Quản lý và Kiểm soát lỗi (Defect Management)</h3>
+<ul>
+  <li><strong>Ghi nhận lỗi:</strong> Bất kỳ lỗi (bug) nào phát hiện đều được ghi chú rõ ràng các bước tái hiện, hình ảnh lỗi và mức độ nghiêm trọng.</li>
+  <li><strong>Xử lý theo mức độ:</strong>
+    <ul>
+      <li><em>Nghiêm trọng (Critical):</em> Lỗi không thể đặt được tour hoặc sai số tiền thanh toán -&gt; Xử lý ngay lập tức (Hotfix).</li>
+      <li><em>Trung bình (Medium):</em> Tính năng phụ hoạt động sai hoặc lỗi giao diện nhẹ -&gt; Xử lý trong đợt cập nhật (Sprint) tới.</li>
+      <li><em>Thấp (Low):</em> Sai chính tả, lỗi thẩm mỹ siêu nhỏ -&gt; Khắc phục khi có thời gian rảnh.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>4.7.4. Quy trình Bảo trì và Tối ưu</h3>
+<ul>
+  <li><strong>Theo dõi hiệu suất:</strong> Đảm bảo tốc độ tải trang web và thời gian phản hồi API luôn dưới 3 giây.</li>
+  <li><strong>Kiểm tra định kỳ:</strong> Rà soát lỗ hổng bảo mật và tối ưu lại các câu lệnh truy vấn MongoDB định kỳ mỗi tháng.</li>
+</ul>
+</body>
+</html>

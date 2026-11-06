@@ -1,0 +1,110 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>Danh Muc Kiem Tra QA VNVIVU</title>
+<style>
+  table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+  th, td { border: 1px solid black; padding: 8px; text-align: left; }
+  th { background-color: #f2f2f2; }
+  h3 { margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<h2>4.5. Thiết lập danh mục kiểm tra (Checklists)</h2>
+
+<h3>1. Checklist review tài liệu yêu cầu (SRS)</h3>
+<p><i>Bảng 8. Checklist review tài liệu yêu cầu</i></p>
+<table>
+  <tr><th>TT</th><th>Nội dung kiểm tra</th><th>Tiêu chí đạt</th><th>Kết quả (v/x)</th><th>Ghi chú</th></tr>
+  <tr><td>1</td><td>Đầy đủ chức năng nghiệp vụ</td><td>Các quy trình cốt lõi (tìm kiếm, đặt tour, áp dụng mã giảm giá, thanh toán, quản lý đơn) được mô tả rõ ràng.</td><td></td><td></td></tr>
+  <tr><td>2</td><td>Yêu cầu phi chức năng</td><td>Nêu rõ các yêu cầu về bảo mật, hiệu năng (thời gian tải trang), và tính khả dụng (responsive).</td><td></td><td></td></tr>
+  <tr><td>3</td><td>Thuật ngữ thống nhất</td><td>Đồng nhất tên gọi các đối tượng (ví dụ: Khách hàng, Quản trị viên, Đơn đặt tour...).</td><td></td><td></td></tr>
+</table>
+
+<h3>2. Checklist thiết kế CƠ SỞ DỮ LIỆU (MongoDB/Mongoose)</h3>
+<p><i>Bảng 9. Checklist thiết kế Database</i></p>
+<table>
+  <tr><th>TT</th><th>Bảng/Collection cần kiểm tra</th><th>Trường bắt buộc (Required)</th><th>Ràng buộc (Validation/Constraints)</th><th>Kết quả</th><th>Ghi chú</th></tr>
+  <tr><td>1</td><td>Tours (Danh sách tour)</td><td>title, price, status, category_id</td><td>price &gt; 0; category_id phải liên kết đúng tới bảng Categories.</td><td></td><td></td></tr>
+  <tr><td>2</td><td>Orders (Đơn đặt tour)</td><td>user_id, tour_id, status</td><td>status thuộc danh sách ["chờ duyệt", "đã xác nhận", "hoàn thành", "đã hủy"].</td><td></td><td></td></tr>
+  <tr><td>3</td><td>Users/Accounts</td><td>email, password, role</td><td>Email phải duy nhất (unique), định dạng email hợp lệ, role được phân định (admin/client).</td><td></td><td></td></tr>
+</table>
+
+<h3>3. Checklist chuẩn mã nguồn (Coding Standard cho BACKEND - NODE.JS)</h3>
+<p><i>Bảng 10. Checklist coding standard</i></p>
+<table>
+  <tr><th>TT</th><th>Hạng mục</th><th>Quy tắc</th><th>Ví dụ đạt chuẩn</th><th>Kết quả</th></tr>
+  <tr><td>1</td><td>Đặt tên biến, hàm</td><td>camelCase, sử dụng tiếng Anh rõ nghĩa, không dùng tiếng Việt.</td><td>calculateTotalPrice thay vì tinh_tien hoặc tinhtien</td><td></td></tr>
+  <tr><td>2</td><td>Xử lý ngoại lệ</td><td>Luôn sử dụng try-catch ở các hàm async để bắt lỗi database/API.</td><td>try { ... } catch (error) { next(error); }</td><td></td></tr>
+  <tr><td>3</td><td>Kiến trúc mã nguồn</td><td>Tuân thủ tuyệt đối cấu trúc MVC. Controller gọi Model, không xử lý logic CSDL trực tiếp ở Route.</td><td>Phân tách thư mục models/, controllers/, routes/ rõ ràng.</td><td></td></tr>
+</table>
+
+<h3>4. Checklist test case chức năng "Đặt tour du lịch"</h3>
+<p><i>Bảng 11. Checklist test case chức năng cốt lõi</i></p>
+<table>
+  <tr><th>TT</th><th>Test case</th><th>Đầu vào</th><th>Kết quả mong đợi</th><th>Thực tế</th></tr>
+  <tr><td>1</td><td>Đặt tour thành công khi đủ thông tin hợp lệ</td><td>User đã đăng nhập, chọn tour, nhập số người, điền đủ thông tin liên hệ.</td><td>Hệ thống tạo đơn hàng mới, trạng thái "chờ duyệt" và điều hướng tới trang xác nhận thành công.</td><td></td></tr>
+  <tr><td>2</td><td>Đặt tour khi số chỗ trống không đủ</td><td>Chọn mua số vé lớn hơn số vé (chỗ) còn nhận của tour đó.</td><td>Hệ thống báo lỗi "Số lượng vé không đủ" và không cho phép tạo đơn.</td><td></td></tr>
+  <tr><td>3</td><td>Áp dụng mã giảm giá (Coupon) hợp lệ</td><td>Nhập một mã giảm giá đang còn hiệu lực vào đơn hàng.</td><td>Tổng tiền đơn hàng được tự động tính lại và giảm trừ theo đúng giá trị mã.</td><td></td></tr>
+</table>
+
+<h3>5. Checklist UI/UX giao diện Khách hàng (Client)</h3>
+<p><i>Bảng 12. Checklist UI/UX</i></p>
+<table>
+  <tr><th>TT</th><th>Thành phần</th><th>Tiêu chí</th><th>Ảnh minh họa</th><th>Đạt/chưa</th></tr>
+  <tr><td>1</td><td>Navigation/Menu</td><td>Dễ dàng điều hướng, trên giao diện Mobile phải hiển thị dạng menu thu gọn (hamburger menu) hoạt động mượt mà.</td><td></td><td></td></tr>
+  <tr><td>2</td><td>Trang chi tiết Tour</td><td>Bố cục thông tin (lịch trình, giá vé) trực quan; Nút "Đặt tour ngay" (Call To Action) nổi bật, dễ bấm.</td><td></td><td></td></tr>
+  <tr><td>3</td><td>Form nhập liệu (Đăng ký, Đặt tour)</td><td>Có đầy đủ nhãn (label), placeholder. Có cảnh báo/thông báo lỗi (validation message) rõ ràng ngay tại field bị nhập sai.</td><td></td><td></td></tr>
+</table>
+
+<h3>6. Checklist bảo mật (áp dụng cho Kiểm thử chất lượng - QE)</h3>
+<p><i>Bảng 13. Checklist bảo mật (Security)</i></p>
+<table>
+  <tr><th>TT</th><th>Hạng mục</th><th>Phương pháp kiểm tra</th><th>Công cụ/Cách test</th><th>Kết quả</th></tr>
+  <tr><td>1</td><td>Bảo vệ mật khẩu</td><td>Xác nhận mật khẩu được mã hóa an toàn (ví dụ: Bcrypt) trong database trước khi lưu, không lộ mật khẩu gốc.</td><td>MongoDB Compass / Studio 3T</td><td></td></tr>
+  <tr><td>2</td><td>Phân quyền truy cập (Authorization)</td><td>Dùng tài khoản Khách hàng (Client) truy cập thử vào các đường dẫn (route) của Admin /admin/*.</td><td>Trình duyệt / Postman</td><td></td></tr>
+  <tr><td>3</td><td>Ngăn chặn Injection (XSS, NoSQL Injection)</td><td>Nhập thử mã script (&lt;script&gt;alert(1)&lt;/script&gt;) vào các form (tìm kiếm, liên hệ) xem hệ thống có lọc dữ liệu không.</td><td>Postman / Manual Test</td><td></td></tr>
+</table>
+
+<h3>7. Checklist triển khai (Deployment)</h3>
+<p><i>Bảng 14. Checklist triển khai</i></p>
+<table>
+  <tr><th>TT</th><th>Công việc</th><th>Yêu cầu</th><th>Người phụ trách</th><th>Hoàn thành</th></tr>
+  <tr><td>1</td><td>Cấu hình môi trường (Environment)</td><td>Biến môi trường (.env) cho Database URI, Secret keys phải được bảo mật, tuyệt đối không push lên Git.</td><td>Developer/DevOps</td><td></td></tr>
+  <tr><td>2</td><td>Backup dữ liệu</td><td>Sao lưu an toàn toàn bộ dữ liệu gốc (tours, users, đơn hàng) của môi trường Production.</td><td>Quản trị Server</td><td></td></tr>
+  <tr><td>3</td><td>Quản lý tiến trình Server (PM2)</td><td>Đảm bảo NodeJS app được chạy qua bộ quản lý (như PM2) để tự động restart lại nếu server xảy ra sự cố (crash).</td><td>Developer/DevOps</td><td></td></tr>
+</table>
+
+<h3>8. Checklist đánh giá chất lượng cuối dự án</h3>
+<p><i>Bảng 15. Checklist đánh giá cuối dự án</i></p>
+<table>
+  <tr><th>TT</th><th>Chỉ số</th><th>Mục tiêu</th><th>Thực tế</th><th>Đánh giá</th></tr>
+  <tr><td>1</td><td>Tỷ lệ Test Case hoàn thành thành công (Pass rate)</td><td>≥ 95%</td><td></td><td></td></tr>
+  <tr><td>2</td><td>Số lỗi nghiêm trọng (Critical Bugs) sót lại</td><td>0</td><td></td><td></td></tr>
+</table>
+
+<h3>9. QA Testing Checklist</h3>
+<p><i>Bảng 16. QA testing checklist</i></p>
+<table>
+  <tr><th>TT</th><th>Test checklist</th><th>Đã kiểm tra</th><th>Ghi chú</th></tr>
+  <tr><td>1</td><td>Các luồng User Story cốt lõi (tìm kiếm, mua tour, thanh toán) đều được thực hiện trơn tru.</td><td></td><td></td></tr>
+  <tr><td>2</td><td>Đã bao phủ các trường hợp kiểm thử cho chức năng phân quyền (Roles/Permissions) của Admin.</td><td></td><td></td></tr>
+  <tr><td>3</td><td>Không có bug nghiêm trọng (Severity 1, 2) nào tồn tại vào cuối chu kỳ phát triển.</td><td></td><td></td></tr>
+  <tr><td>4</td><td>Đáp ứng yêu cầu hiệu năng: Giao diện Trang chủ và trang Danh sách Tour phản hồi trong vòng &lt; 3 giây.</td><td></td><td></td></tr>
+  <tr><td>5</td><td>UI/UX hiển thị đúng bản vẽ thiết kế (hoặc chuẩn template) trên mọi thiết bị (Responsive Mobile/Tablet/PC).</td><td></td><td></td></tr>
+</table>
+
+<h3>10. Code Review Checklist</h3>
+<p><i>Bảng 17. Code review checklist</i></p>
+<table>
+  <tr><th>TT</th><th>Tiêu chí</th><th>Mức độ ưu tiên</th><th>Ghi chú</th></tr>
+  <tr><td>1</td><td>Code dễ đọc, đặt tên biến/hàm logic bằng tiếng Anh, có comment ở các hàm tính toán phức tạp.</td><td>Cao</td><td></td></tr>
+  <tr><td>2</td><td>Dữ liệu đầu vào từ người dùng ở req.body, req.query phải được xác thực (validate/sanitize) trước khi xử lý.</td><td>Cao</td><td></td></tr>
+  <tr><td>3</td><td>Xử lý ngoại lệ rõ ràng (Error handling). Không để crash server đột ngột vì Unhandled Promise Rejection.</td><td>Cao</td><td></td></tr>
+  <tr><td>4</td><td>Không "hard code" (gắn cứng) các thông tin nhạy cảm (API keys, DB connection strings) trực tiếp trong file code.</td><td>Cao</td><td></td></tr>
+  <tr><td>5</td><td>Dọn dẹp sạch sẽ các đoạn console.log() dùng để debug và các đoạn mã thừa (bị comment bỏ) trước khi đưa lên nhánh chính.</td><td>Trung bình</td><td></td></tr>
+</table>
+
+</body>
+</html>
